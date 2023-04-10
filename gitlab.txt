@@ -1,0 +1,15 @@
+---for gitlab uploading---
+
+. (all)
+
+git add .
+
+git commit -m ""
+
+git remote add origin (link)
+
+git push -u origin master
+
+--- for updating file in the folder ---
+
+git pull origin master
