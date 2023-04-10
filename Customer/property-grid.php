@@ -3,7 +3,8 @@ require_once 'php/connection.php';
 global $con;
 
 // Get the total number of records from our table "students".
-$total_pages = $con->query("SELECT * FROM seller_property WHERE approved = 'Yes' AND status = 'For Sale' ")->num_rows;
+
+$total_pages = $con->query("SELECT * FROM `seller_property` WHERE approved = 'Yes' AND status = 'For Sale'")->num_rows;
 
 // Check if the page number is specified and check if it's a number, if not return the default page number which is 1.
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
@@ -11,7 +12,7 @@ $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 // Number of results to show on each page.
 $num_results_on_page = 6;
 
-if ($stmt = $con->prepare('SELECT * FROM seller_property ORDER BY id LIMIT ?,?')) {
+if ($stmt = $con->prepare("SELECT * FROM seller_property WHERE approved = 'Yes' AND status = 'For Sale' ORDER BY id LIMIT ?,?")) {
     // Calculate the page to get the results we need from our table.
     $calc_page = ($page - 1) * $num_results_on_page;
     $stmt->bind_param('ii', $calc_page, $num_results_on_page);
@@ -21,47 +22,53 @@ if ($stmt = $con->prepare('SELECT * FROM seller_property ORDER BY id LIMIT ?,?')
 ?>
 
 <style>
-    .pagination-container {
-        width: 100%;
-        text-align: center;
-    }
+.pagination-container {
+    width: 100%;
+    text-align: center;
+}
 
-    .pagination {
-        list-style-type: none;
-        padding: 10px 0;
-        display: inline-flex;
-        justify-content: space-between;
-        box-sizing: border-box;
-    }
-    .pagination li {
-        box-sizing: border-box;
-        padding-right: 10px;
-    }
-    .pagination li a {
-        box-sizing: border-box;
-        background-color: #e2e6e6;
-        padding: 8px;
-        text-decoration: none;
-        font-size: 12px;
-        font-weight: bold;
-        color: #616872;
-        border-radius: 4px;
-    }
-    .pagination li a:hover {
-        background-color: #d4dada;
-    }
-    .pagination .next a, .pagination .prev a {
-        text-transform: uppercase;
-        font-size: 12px;
-    }
-    .pagination .currentpage a {
-        background-color: #518acb;
-        color: #fff;
-    }
-    .pagination .currentpage a:hover {
-        background-color: #518acb;
-    }
-            
+.pagination {
+    list-style-type: none;
+    padding: 10px 0;
+    display: inline-flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.pagination li {
+    box-sizing: border-box;
+    padding-right: 10px;
+}
+
+.pagination li a {
+    box-sizing: border-box;
+    background-color: #e2e6e6;
+    padding: 8px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    color: #616872;
+    border-radius: 4px;
+}
+
+.pagination li a:hover {
+    background-color: #d4dada;
+}
+
+.pagination .next a,
+.pagination .prev a {
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.pagination .currentpage a {
+    background-color: #518acb;
+    color: #fff;
+}
+
+.pagination .currentpage a:hover {
+    background-color: #518acb;
+}
 </style>
 
 <body>
@@ -94,14 +101,14 @@ if ($stmt = $con->prepare('SELECT * FROM seller_property ORDER BY id LIMIT ?,?')
 
         <!-- ======= Property Grid ======= -->
 
-        
-            
-            <section class="property-grid grid">
-                <div class="container">
-                    <div class="row">
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                        <div class="col-md-4">
-                            <div class="card-box-a card-shadow">
+
+
+        <section class="property-grid grid">
+            <div class="container">
+                <div class="row">
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="col-md-4">
+                        <div class="card-box-a card-shadow">
                             <div class="img-box-a">
                                 <?php echo '<img src="../uploads/'.$row["image"].'" alt="" class="img-a img-fluid">'; ?>
                                 <!-- <img src="assets/img/property-1.jpg" alt="" class="img-a img-fluid"> -->
@@ -147,12 +154,12 @@ if ($stmt = $con->prepare('SELECT * FROM seller_property ORDER BY id LIMIT ?,?')
                             </div>
                         </div>
                     </div>
-            <?php endwhile; ?>
-                    </div>
+                    <?php endwhile; ?>
                 </div>
+            </div>
 
-            </section>
-<br><br>
+        </section>
+        <br><br>
         <div class="pagination-container">
             <?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
             <ul class="pagination">
@@ -165,17 +172,28 @@ if ($stmt = $con->prepare('SELECT * FROM seller_property ORDER BY id LIMIT ?,?')
                 <li class="dots">...</li>
                 <?php endif; ?>
 
-                <?php if ($page-2 > 0): ?><li class="page"><a href="property-grid.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li><?php endif; ?>
-                <?php if ($page-1 > 0): ?><li class="page"><a href="property-grid.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li><?php endif; ?>
+                <?php if ($page-2 > 0): ?><li class="page"><a
+                        href="property-grid.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li>
+                <?php endif; ?>
+                <?php if ($page-1 > 0): ?><li class="page"><a
+                        href="property-grid.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li>
+                <?php endif; ?>
 
-                <li class="currentpage"><a href="property-grid.php?page=<?php echo $page ?>"><?php echo $page ?></a></li>
+                <li class="currentpage"><a href="property-grid.php?page=<?php echo $page ?>"><?php echo $page ?></a>
+                </li>
 
-                <?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="property-grid.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li><?php endif; ?>
-                <?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a href="property-grid.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li><?php endif; ?>
+                <?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a
+                        href="property-grid.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li>
+                <?php endif; ?>
+                <?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a
+                        href="property-grid.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li>
+                <?php endif; ?>
 
                 <?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
                 <li class="dots">...</li>
-                <li class="end"><a href="property-grid.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a></li>
+                <li class="end"><a
+                        href="property-grid.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a>
+                </li>
                 <?php endif; ?>
 
                 <?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
@@ -184,7 +202,7 @@ if ($stmt = $con->prepare('SELECT * FROM seller_property ORDER BY id LIMIT ?,?')
             </ul>
             <?php endif; ?>
         </div>
-        
+
 
     </main><!-- End #main -->
 
@@ -194,7 +212,7 @@ if ($stmt = $con->prepare('SELECT * FROM seller_property ORDER BY id LIMIT ?,?')
 
 </html>
 
-    <?php
+<?php
     $stmt->close();
 }
 ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 09, 2023 at 01:41 PM
+-- Generation Time: Apr 10, 2023 at 03:50 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -173,7 +173,10 @@ CREATE TABLE `saved_property` (
 --
 
 INSERT INTO `saved_property` (`id`, `property_id`, `customer_id`, `date`) VALUES
-(0, 'RS-0000004', 1, '2023-04-09');
+(1, 'RS-0000004', 1, '2023-04-09'),
+(2, 'RS-0000010', 1, '2023-04-10'),
+(3, 'RS-0000008', 1, '2023-04-10'),
+(4, 'RS-0000006', 3, '2023-04-10');
 
 -- --------------------------------------------------------
 
@@ -198,9 +201,7 @@ CREATE TABLE `seller_login` (
 
 INSERT INTO `seller_login` (`id`, `name`, `username`, `email`, `password`, `address`, `contact_num`, `image`) VALUES
 (1, 'Jephthah Jehosaphat Landicho', 'jeph12', 'landichojjl@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '', '', ''),
-(2, 'Jephthah Jehosaphat Landicho', 'qwerty', 'landichojjl@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '', '', ''),
 (3, 'Jephthah', 'jephthah', 'jephthahlandicho1212@gmail.com', 'b0399d2029f64d445bd131ffaa399a42d2f8e7dc', '', '', ''),
-(4, 'Jephthah Jehosaphat Landicho', 'akosijeph', 'landichojjl@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '', '', ''),
 (7, 'Kimberly Panganiban', 'k1mby', 'kimby@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '', '', ''),
 (8, 'Clarence Phol Andino', 'clarence', 'clarenceeee@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '', '', ''),
 (9, '', '', '', '', '', '', ''),
@@ -243,7 +244,6 @@ INSERT INTO `seller_property` (`id`, `title`, `more_info`, `price`, `sqm`, `type
 ('RS-0000004', 'Solaya Calatagan', 'Beyond the given innate beauty of nature, Solaya Calatagan extends the best experience of owning a HOME for Batangueños, to grow their dreams and make a living. A piece of nature that is a good investment to start for the future of their families.', 5000000, 199, 'House', 'Yes', 'For Sale', 1, '13.8329883', '120.6322361', 'Calatagan, Batangas, Calabarzon, 4215, Philippines', 2, 2, 3, '3.jpg', '2023-03-31', 0),
 ('RS-0000005', 'Grand Villa', 'Grand Mesa Residences is one of the prime developments by Wee Comm located in Quezon City. It is designed with nature-inspired architecture and lifestyle features, making it the right choice for those who want to experience nature living in the heart of the city. Located just five minutes from La Mesa Ecopark, all homeowners can enjoy a living space to slow down, escape the fast-paced city life, and marvel at the view of the distant mountain range of Rizal. To live at Grand Mesa Residences is to live conveniently, especially with the MRT-7 which promises a hassle-free commute around the metro.', 20000000, 400, 'House and Lot', 'Yes', 'For Sale', 1, '13.9382014', '120.7294838', 'Balayan, Batangas, Calabarzon, 4213, Philippines', 3, 2, 5, '16.jpg', '2023-03-31', 0),
 ('RS-0000006', 'Bahay ni Cleo', 'sdgsdgsdg', 12000000, 100, 'House', 'Yes', 'For Sale', 1, '14.036155647535658', '120.65333066330446', 'Knights of Columbus Hall, Lian-Calatagan Road, Dos, Quatro, Lian, Batangas, Calabarzon, 4216, Philippines', 2, 1, 2, '8.jpg', '2023-04-03', 0),
-('RS-0000007', 'Just a Lot', 'fsdfsfgsdfgdgfgdfgdf', 999999, 100, 'Lot', 'Yes', 'For Sale', 4, '13.83279302691984', '120.63284943680225', 'Pamahalaang Barangay ng Poblacion III, F. Martinez Street, Poblacion III, Calatagan, Batangas', 0, 0, 0, 'lot1.jpg', '2023-04-06', 0),
 ('RS-0000008', 'Lot a lot', 'zdgdsgkdggrtfgg', 2000000, 200, 'Lot', 'Yes', 'For Sale', 1, '14.03680615', '120.67948718635498', 'Bagong Pook Elementary School, Palico-Lian Provincial Road, Bagoong Pook, Lian, Batangas', 0, 0, 0, 'lot4.jpg', '2023-04-06', 0),
 ('RS-0000009', 'Lian House', 'This is more information', 2340000, 200, 'House', 'No', 'For Sale', 1, '14.0734578', '120.6322736', 'Nasugbu, Batangas, Calabarzon, 4231, Philippines', 2, 1, 3, '15.jpg', '2023-04-06', 150),
 ('RS-0000010', 'The Mansion', 'Bili na kayo. please lang', 60000000, 500, 'House', 'Yes', 'For Sale', 1, '14.0423328', '120.6262978', 'San Diego, Lian, Batangas, Calabarzon, Philippines', 5, 2, 6, '16.jpg', '2023-04-06', 298),
@@ -281,8 +281,6 @@ INSERT INTO `seller_property_photos` (`id`, `property_id`, `photos`) VALUES
 (187, 'RS-0000003', '../uploads/18.jpg'),
 (188, 'RS-0000006', '../uploads/19.jpg'),
 (189, 'RS-0000006', '../uploads/20.jpg'),
-(190, 'RS-0000007', '../uploads/lot2.jpg'),
-(191, 'RS-0000007', '../uploads/lot3.jpg'),
 (194, 'RS-0000008', '../uploads/lot2.jpg'),
 (195, 'RS-0000008', '../uploads/lot3.jpg'),
 (196, 'RS-0000009', '../uploads/19.jpg'),
@@ -349,6 +347,7 @@ ALTER TABLE `notifications`
 -- Indexes for table `saved_property`
 --
 ALTER TABLE `saved_property`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `customer_id` (`customer_id`),
   ADD KEY `property_id` (`property_id`);
 
@@ -400,6 +399,12 @@ ALTER TABLE `buyer_login`
 --
 ALTER TABLE `notifications`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `saved_property`
+--
+ALTER TABLE `saved_property`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `seller_login`
