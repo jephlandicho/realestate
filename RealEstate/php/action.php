@@ -34,7 +34,9 @@ if(isset($_POST['action']) && $_POST['action'] == 'registerSeller'){
     $contact = $admin->test_input($_POST['contact']);
     $image = $_FILES['image'];
     $hpass = sha1($pass);
+    
 
+    
     if ($image['error'] !== UPLOAD_ERR_OK) {
         echo $admin->showMessage('Error uploading profile picture!');
     }
@@ -54,6 +56,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'registerSeller'){
         else{
             echo $admin->showMessage('Something went wrong! Try again later');
         }
+
     }
     
 }

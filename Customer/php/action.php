@@ -3,6 +3,7 @@ session_start();
 require_once 'query.php';
 $admin = new Admin();
 
+
 // Login
 if(isset($_POST['action']) && $_POST['action'] == 'customerLogin'){
     // print_r($_POST);
