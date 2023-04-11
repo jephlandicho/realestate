@@ -198,7 +198,7 @@ select {
 
 
 .question-mark-icon::before {
-    content: "Need Help?";
+    /* content: "Need Help?"; */
     /* Change this text to whatever you want to display */
     display: none;
     position: absolute;
@@ -377,7 +377,7 @@ select {
                             <div class="map" id="map"></div>
                         </div>
                         <!-- The question mark icon -->
-                        <div class="question-mark-icon" onclick="openModal()"></div>
+                        <div title="Need Help?" class="question-mark-icon" onclick="openModal()"></div>
 
                         <!-- The modal -->
                         <div id="myModal" class="modal">
@@ -405,7 +405,6 @@ select {
                                         zooming out on the map</li>
 
                                 </ul>
-
                             </div>
                         </div>
                         <div class="col-md-4">

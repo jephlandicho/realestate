@@ -61,12 +61,20 @@ function location() {
 }
 function approved() {
     $conn = mysqli_connect("localhost","root","","realestate" ) or die ("error" . mysqli_error($conn));
+    $seller_id = $_POST['dataId1'];
     $property_id = $_POST['dataId'];
     $query = "UPDATE `seller_property`
     SET approved = 'Yes' WHERE id='$property_id'";
     $result = mysqli_query($conn,$query);
     if(result){
         echo 'approved';
+        $message = "Property Approved";
+        $datetime = date('Y-m-d H:i:s');
+        $notifquery = "INSERT INTO notifications VALUES ('','','$message','$seller_id','Agent','Posted','$datetime','Unread')";
+        $result4 = mysqli_query($conn, $notifquery);
+        if (!$result4) {
+            echo "Error: " . mysqli_error($con);
+          }
     }
 
 }

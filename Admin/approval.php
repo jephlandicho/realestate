@@ -5,7 +5,7 @@ if ($con->connect_error) {
     die("Connection failed: " . $con->connect_error);
 }
 
-$sql = "SELECT seller_property.id, `title`, sl.name AS Name, `more_info`, `price`, `sqm`, `type`, `latitude`, `longitude`, `location`, `bedroom`, `garages`, `cr`, seller_property.image,`date`,'floor_sqm' FROM `seller_property` 
+$sql = "SELECT seller_property.id, `title`, sl.name AS Name, `more_info`, `price`, `sqm`, `type`, `latitude`, `longitude`, `location`, `bedroom`, `garages`, `cr`, seller_property.image,`date`,`floor_sqm`,seller_property.seller_id FROM `seller_property` 
 INNER JOIN `seller_login` AS sl ON seller_property.seller_id = sl.id
 WHERE approved='No' ORDER BY date DESC";
 $result = $con->query($sql);
@@ -112,12 +112,12 @@ $result = $con->query($sql);
                             <input class="property_id" type="hidden" value="<?php echo $row["id"]?>">
                             <strong> Agent: </strong> <?php echo $row["Name"]; ?> <br>
                             <strong> Type: </strong> <?php echo $row["type"]; ?> <br>
-                            <strong> SQM: </strong> <?php echo $row["sqm"]; ?> <br>
+                            <strong> Land Area (SQM): </strong> <?php echo $row["sqm"]; ?> <br>
                             <?php
                             $price = $row["price"];
                             $_price = number_format($price,2);
                             ?>
-                            <strong> Price per sqm: </strong> ₱ <?php echo $_price ?><br>
+                            <strong> Price: </strong> ₱ <?php echo $_price ?><br>
                             <strong> Location: </strong> <a style="cursor: pointer;" data-id2="<?php echo $row["id"]?>"
                                 class="show-loc">
                                 <?php echo $row["location"]; ?></a><br>
@@ -132,8 +132,9 @@ $result = $con->query($sql);
                                 type="button" class="btn btn-secondary btn_photos" data-bs-backdrop="static"
                                 data-bs-keyboard="false">
                                 Photos</button>
-                            <button data-id3="<?php echo $row["id"]?>" title="Approved Property" id="btn_approved"
-                                type="button" class="btn btn-success btn_approved">
+                            <button data-id2="<?php echo $row["seller_id"]?>" data-id3="<?php echo $row["id"]?>"
+                                title="Approved Property" id="btn_approved" type="button"
+                                class="btn btn-success btn_approved">
                                 <i class="bi bi-check-circle"></i>
                             </button>
                         </div>
@@ -211,7 +212,7 @@ $result = $con->query($sql);
                 </div>
                 <div id="floor" style="display: none;">
                     <div style="float: center;">
-                        <label style="display: inline-block;"><strong>Floor Area:</strong></label>
+                        <label style="display: inline-block;"><strong>Floor Area (SQM):</strong></label>
                         <div style="display: inline-block;" class="floor"></div>
                     </div>
                 </div>
@@ -420,11 +421,14 @@ $(document).ready(function() {
 
     $(".btn_approved").on("click", function() {
         var dataId = $(this).attr("data-id3");
+        var dataId1 = $(this).attr("data-id2");
+        // console.log(dataId, dataId1)
         $.ajax({
             method: 'POST',
             url: "z-approved.php",
             data: {
-                dataId: dataId
+                dataId: dataId,
+                dataId1: dataId1
             },
             success: function(response) {
                 Swal.fire({

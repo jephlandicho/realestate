@@ -4,10 +4,22 @@
         header('location:index.php');
         exit();
     }
+    include 'php/connection.php'; 
+    global $con;
  $info = $_SESSION['seller_info'];
 
  $infomation = implode($info);
- 
+
+    $id = $_SESSION['ID'];
+    $agent_id = implode($id);
+
+    $count = "SELECT COUNT(*) as total_rows FROM notifications WHERE `user_type` = 'Agent' AND `user_target` = '$agent_id' AND `status` = 'Unread'";
+    $result = mysqli_query($con, $count);
+    $row = mysqli_fetch_assoc($result);
+    $total_notif = $row["total_rows"];
+   
+    $sql = "SELECT * FROM notifications WHERE `user_type` = 'Agent' AND `user_target` = '$agent_id' AND `status` = 'Unread'";
+    $result1 = mysqli_query($con, $sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,72 +106,47 @@
 
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-bell"></i>
-                        <span class="badge bg-primary badge-number">4</span>
+                        <span class="badge bg-primary badge-number"><?= $total_notif ?></span>
                     </a><!-- End Notification Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                         <li class="dropdown-header">
-                            You have 4 new notifications
-                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                            You have <?= $total_notif ?> new notifications
                         </li>
-                        <li>
+                        <?php
+                        while ($row = mysqli_fetch_assoc($result1)){
+                            echo '<li>
                             <hr class="dropdown-divider">
                         </li>
-
                         <li class="notification-item">
-                            <i class="bi bi-exclamation-circle text-warning"></i>
+                            <i class="bi bi-exclamation-circle text-success"></i>
                             <div>
-                                <h4>Lorem Ipsum</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>30 min. ago</p>
+                            <a class="text-success" href="x-notif.php?id='.$row['id'].'"> <h4>'.$row['message']. '</h4> </a>';
+                                
+                                $created_at = $row["created_at"];
+
+                                // Get the current date and time
+                                $current_time = time();
+
+                                // Get the time difference in seconds
+                                $time_diff = $current_time - strtotime($created_at);
+
+                                // Check if it's the same day
+                                if (date('Y-m-d', $current_time) == date('Y-m-d', strtotime($created_at))) {
+                                // Display the time ago in minutes
+                                $time = round($time_diff / 60) . " minutes ago";
+                                } else {
+                                // Display the date
+                                $time = date('F j, Y', strtotime($created_at));
+                                }
+                                echo '
+                                <p>'.$time.'</p>
                             </div>
-                        </li>
+                        </li>';
 
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+                        }
 
-                        <li class="notification-item">
-                            <i class="bi bi-x-circle text-danger"></i>
-                            <div>
-                                <h4>Atque rerum nesciunt</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>1 hr. ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class="bi bi-check-circle text-success"></i>
-                            <div>
-                                <h4>Sit rerum fuga</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>2 hrs. ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class="bi bi-info-circle text-primary"></i>
-                            <div>
-                                <h4>Dicta reprehenderit</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>4 hrs. ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="dropdown-footer">
-                            <a href="#">Show all notifications</a>
-                        </li>
+                        ?>
 
                     </ul><!-- End Notification Dropdown Items -->
 

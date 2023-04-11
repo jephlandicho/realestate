@@ -9,6 +9,7 @@
  $info = $_SESSION['info'];
 
  $infomation = implode($info);
+ 
  $count = "SELECT COUNT(*) as total_rows FROM notifications WHERE `user_type` = 'Admin' AND `status` = 'Unread'";
  $result = mysqli_query($con, $count);
  $row = mysqli_fetch_assoc($result);
