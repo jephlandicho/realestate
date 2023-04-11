@@ -233,13 +233,6 @@
                     <span>Properties</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link <?= (basename($_SERVER['PHP_SELF'])=='chat.php')?"active-nav":""; ?> "
-                    href="chat.php">
-                    <i class="bi bi-chat-dots"></i>
-                    <span>Message</span>
-                </a>
-            </li>
 
             <li class="nav-heading">Accounts</li>
 

@@ -23,7 +23,7 @@ Agent:
 UI:
 Dashboard (0)
 Help button/Modals, when agent inserting the maps/location of the property (Clarence's Task) (/)
-Messages with customer (0)
+Messages with customer via email (/)
 
 Backend:
 Predictive analytics for price, if posible (1)
@@ -37,7 +37,7 @@ Customer:
 UI:
 Display all the properties in grid (/)
 Maps that will display the location of the property  (/)
-Messages with agent (0)
+Messages with agent via email (/)
 Calculator, that can compute the amount if someone wants to buy the property per year (2)
 
 Backend:

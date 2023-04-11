@@ -2,8 +2,8 @@
 require_once 'php/connection.php';
 
 global $con;
-$session_id = $_SESSION['ID'];
-$sess_id = implode($session_id);
+// $session_id = $_SESSION['ID'];
+// $sess_id = implode($session_id);
 
 if (isset($_GET["id"])) {
     $property_id = $_GET["id"];
@@ -138,9 +138,7 @@ if (isset($_GET["id"])) {
                                     <div class="title-box-d section-t4">
                                         <h3 class="title-d"> Message/Save</h3>
                                     </div>
-                                    <button
-                                        onclick="window.open('mailto:<?php echo $email ?>?subject=<?=$row['title'] ?>&body=<?='%0D%0A%0D%0A--%0D%0A'.$row['title'].'%0D%0A'.$row['price'].'&nbsp;pesos%0D%0AReal Estate Inquiry'?>', '_blank', 'menubar=yes,toolbar=yes,location=yes');"
-                                        class="btn btn-primary btn-lg">
+                                    <button id='message' class="btn btn-primary btn-lg">
                                         Message
                                     </button>
                                     <button id="add_to_list" data-id="<?php echo $property_id; ?>"
@@ -277,28 +275,11 @@ if (isset($_GET["id"])) {
     <script>
     $(document).ready(function() {
         $("#add_to_list").on("click", function() {
-            var dataId = $(this).attr("data-id");
-            var cust_ID = "<?php echo $sess_id; ?>";
-            console.log(dataId, cust_ID);
-            $.ajax({
-                method: 'POST',
-                url: "z-addtolist.php",
-                data: {
-                    dataId: dataId,
-                    cust_ID: cust_ID
-                },
-                success: function(data) {
-                    // console.log(data);
-                    if (data == 'Success') {
-                        window.location = "list.php"
-                    } else {
-                        window.location = "main.php"
-                    }
-                }
-            });
-
+            window.location = '../Customer/';
         });
-
+        $("#message").on("click", function() {
+            window.location = '../Customer/';
+        });
         var lat = latitude;
         var lng = longitude;
         console.log(lat, lng);

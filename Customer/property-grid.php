@@ -124,9 +124,12 @@ if ($stmt = $con->prepare("SELECT * FROM seller_property WHERE approved = 'Yes' 
                                         <div class="price-box d-flex">
                                             <span class="price-a">buy | ₱ <?php echo $row['price']; ?></span>
                                         </div>
-                                        <a href="property-single.php" class="link-a">Click here to view
+                                        <?php
+                                            echo '<a href="property-single.php?id='.$row["id"].'" class="link-a">Click here
+                                            to view
                                             <span class="bi bi-chevron-right"></span>
-                                        </a>
+                                        </a>';
+                                            ?>
                                     </div>
                                     <div class="card-footer-a">
                                         <ul class="card-info d-flex justify-content-around">

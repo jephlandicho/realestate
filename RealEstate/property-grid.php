@@ -1,414 +1,221 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php include 'header.php';
+require_once 'php/connection.php';
+global $con;
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+// Get the total number of records from our table "students".
 
-  <title>Real Estate</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+$total_pages = $con->query("SELECT * FROM `seller_property` WHERE approved = 'Yes' AND status = 'For Sale'")->num_rows;
 
-  <!-- Favicons -->
-  <link href="assets/img/icon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+// Check if the page number is specified and check if it's a number, if not return the default page number which is 1.
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+// Number of results to show on each page.
+$num_results_on_page = 6;
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+if ($stmt = $con->prepare("SELECT * FROM seller_property WHERE approved = 'Yes' AND status = 'For Sale' ORDER BY id LIMIT ?,?")) {
+    // Calculate the page to get the results we need from our table.
+    $calc_page = ($page - 1) * $num_results_on_page;
+    $stmt->bind_param('ii', $calc_page, $num_results_on_page);
+    $stmt->execute(); 
+    // Get the results...
+    $result = $stmt->get_result();
+?>
 
-  <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
+<style>
+.pagination-container {
+    width: 100%;
+    text-align: center;
+}
 
-  <!-- =======================================================
-  * Template Name: EstateAgency - v4.10.0
-  * Template URL: https://bootstrapmade.com/real-estate-agency-bootstrap-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-</head>
+.pagination {
+    list-style-type: none;
+    padding: 10px 0;
+    display: inline-flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.pagination li {
+    box-sizing: border-box;
+    padding-right: 10px;
+}
+
+.pagination li a {
+    box-sizing: border-box;
+    background-color: #e2e6e6;
+    padding: 8px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    color: #616872;
+    border-radius: 4px;
+}
+
+.pagination li a:hover {
+    background-color: #d4dada;
+}
+
+.pagination .next a,
+.pagination .prev a {
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.pagination .currentpage a {
+    background-color: #518acb;
+    color: #fff;
+}
+
+.pagination .currentpage a:hover {
+    background-color: #518acb;
+}
+</style>
 
 <body>
-  <?php include 'header.php'; ?>
+    <main id="main">
 
-  <main id="main">
-
-    <!-- ======= Intro Single ======= -->
-    <section class="intro-single">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12 col-lg-8">
-            <div class="title-single-box">
-              <h1 class="title-single">Our Amazing Properties</h1>
-              <span class="color-text-a">Grid Properties</span>
+        <!-- ======= Intro Single ======= -->
+        <section class="intro-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-lg-8">
+                        <div class="title-single-box">
+                            <h1 class="title-single">Our Amazing Properties</h1>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-4">
+                        <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="index.php">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-curbuy="page">
+                                    Properties
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-md-12 col-lg-4">
-            <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                  <a href="index.php">Home</a>
+        </section><!-- End Intro Single-->
+
+        <!-- ======= Property Grid ======= -->
+
+
+
+        <section class="property-grid grid">
+            <div class="container">
+                <div class="row">
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="col-md-4">
+                        <div class="card-box-a card-shadow">
+                            <div class="img-box-a">
+                                <?php echo '<img src="../uploads/'.$row["image"].'" alt="" class="img-a img-fluid">'; ?>
+                                <!-- <img src="assets/img/property-1.jpg" alt="" class="img-a img-fluid"> -->
+                            </div>
+                            <div class="card-overlay">
+                                <div class="card-overlay-a-content">
+                                    <div class="card-header-a">
+                                        <h2 class="card-title-a">
+                                            <a href="#"> <?php echo $row['title']; ?></a>
+                                        </h2>
+                                    </div>
+                                    <div class="card-body-a">
+                                        <div class="price-box d-flex">
+                                            <span class="price-a">buy | ₱ <?php echo $row['price']; ?></span>
+                                        </div>
+                                        <?php
+                                            echo '<a href="property-single.php?id='.$row["id"].'" class="link-a">Click here
+                                            to view
+                                            <span class="bi bi-chevron-right"></span>
+                                        </a>';
+                                            ?>
+                                    </div>
+                                    <div class="card-footer-a">
+                                        <ul class="card-info d-flex justify-content-around">
+                                            <li>
+                                                <h4 class="card-info-title">Area</h4>
+                                                <span><?php echo $row['sqm']; ?>m
+                                                    <sup>2</sup>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <h4 class="card-info-title">Beds</h4>
+                                                <span>2</span>
+                                            </li>
+                                            <li>
+                                                <h4 class="card-info-title">Baths</h4>
+                                                <span>4</span>
+                                            </li>
+                                            <li>
+                                                <h4 class="card-info-title">Garages</h4>
+                                                <span>1</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endwhile; ?>
+                </div>
+            </div>
+
+        </section>
+        <br><br>
+        <div class="pagination-container">
+            <?php if (ceil($total_pages / $num_results_on_page) > 0): ?>
+            <ul class="pagination">
+                <?php if ($page > 1): ?>
+                <li class="prev"><a href="property-grid.php?page=<?php echo $page-1 ?>">Prev</a></li>
+                <?php endif; ?>
+
+                <?php if ($page > 3): ?>
+                <li class="start"><a href="property-grid.php?page=1">1</a></li>
+                <li class="dots">...</li>
+                <?php endif; ?>
+
+                <?php if ($page-2 > 0): ?><li class="page"><a
+                        href="property-grid.php?page=<?php echo $page-2 ?>"><?php echo $page-2 ?></a></li>
+                <?php endif; ?>
+                <?php if ($page-1 > 0): ?><li class="page"><a
+                        href="property-grid.php?page=<?php echo $page-1 ?>"><?php echo $page-1 ?></a></li>
+                <?php endif; ?>
+
+                <li class="currentpage"><a href="property-grid.php?page=<?php echo $page ?>"><?php echo $page ?></a>
                 </li>
-                <li class="breadcrumb-item active" aria-curbuy="page">
-                  Properties Grid
+
+                <?php if ($page+1 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a
+                        href="property-grid.php?page=<?php echo $page+1 ?>"><?php echo $page+1 ?></a></li>
+                <?php endif; ?>
+                <?php if ($page+2 < ceil($total_pages / $num_results_on_page)+1): ?><li class="page"><a
+                        href="property-grid.php?page=<?php echo $page+2 ?>"><?php echo $page+2 ?></a></li>
+                <?php endif; ?>
+
+                <?php if ($page < ceil($total_pages / $num_results_on_page)-2): ?>
+                <li class="dots">...</li>
+                <li class="end"><a
+                        href="property-grid.php?page=<?php echo ceil($total_pages / $num_results_on_page) ?>"><?php echo ceil($total_pages / $num_results_on_page) ?></a>
                 </li>
-              </ol>
-            </nav>
-          </div>
+                <?php endif; ?>
+
+                <?php if ($page < ceil($total_pages / $num_results_on_page)): ?>
+                <li class="next"><a href="property-grid.php?page=<?php echo $page+1 ?>">Next</a></li>
+                <?php endif; ?>
+            </ul>
+            <?php endif; ?>
         </div>
-      </div>
-    </section><!-- End Intro Single-->
 
-    <!-- ======= Property Grid ======= -->
-    <section class="property-grid grid">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="grid-option">
-              <form>
-                <select class="custom-select">
-                  <option selected>All</option>
-                  <option value="1">New to Old</option>
-                  <option value="2">For buy</option>
-                  <option value="3">For Sale</option>
-                </select>
-              </form>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-1.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">buy | ₱ 12.000</span>
-                    </div>
-                   <!--  <a href="property-single.php" class="link-a">aei
-                      <span class="bi bi-chevron-right"></span>
-                    </a> -->
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-3.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">buy | ₱ 12.000</span>
-                    </div>
-                    <!-- <a href="property-single.php" class="link-a">aei
-                      <span class="bi bi-chevron-right"></span>
-                    </a> -->
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-6.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">buy | ₱ 12.000</span>
-                    </div>
-                    <!-- <a href="property-single.php" class="link-a">aei
-                      <span class="bi bi-chevron-right"></span>
-                    </a> -->
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-7.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">buy | ₱ 12.000</span>
-                    </div>
-                    <!-- <a href="property-single.php" class="link-a">aei
-                      <span class="bi bi-chevron-right"></span>
-                    </a> -->
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-8.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">buy | ₱ 12.000</span>
-                    </div>
-                   <!--  <a href="property-single.php" class="link-a">aei
-                      <span class="bi bi-chevron-right"></span>
-                    </a> -->
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-10.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">buy | ₱ 12.000</span>
-                    </div>
-                    <!-- <a href="property-single.php" class="link-a">aei
-                      <span class="bi bi-chevron-right"></span>
-                    </a> -->
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <nav class="pagination-a">
-              <ul class="pagination justify-content-end">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1">
-                    <span class="bi bi-chevron-left"></span>
-                  </a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item next">
-                  <a class="page-link" href="#">
-                    <span class="bi bi-chevron-right"></span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </section><!-- End Property Grid Single-->
 
-  </main><!-- End #main -->
+    </main><!-- End #main -->
 
- <?php 
- // include 'footer.php'; ?>
-
-  <div id="preloader"></div>
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-
-  <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+    <?php include 'footer.php'; ?>
 
 </body>
 
 </html>
+
+<?php
+    $stmt->close();
+}
+?>
