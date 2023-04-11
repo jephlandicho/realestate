@@ -30,23 +30,32 @@ if(isset($_POST['action']) && $_POST['action'] == 'registerSeller'){
     $username = $admin->test_input($_POST['username']);
     $email = $admin->test_input($_POST['email']);
     $pass = $admin->test_input($_POST['password']);
-
+    $address = $admin->test_input($_POST['address']);
+    $contact = $admin->test_input($_POST['contact']);
+    $image = $_FILES['image'];
     $hpass = sha1($pass);
 
-    if($admin->seller_exist($username)){
-        echo $admin->showMessage('This username is already exist');
+    if ($image['error'] !== UPLOAD_ERR_OK) {
+        echo $admin->showMessage('Error uploading profile picture!');
+    }
+    else if($admin->seller_exist($username)){
+        echo $admin->showMessage('This username is already exist!!!');
     }
     else if($admin->seller_email($email)){
         echo $admin->showMessage('This email is already exist');
     }
     else{
-        if($admin->registerSeller($name,$username,$email,$hpass)){
+        $filename = uniqid() . '-' . basename($image['name']);
+        $destination = '../../uploads/' . $filename;
+        move_uploaded_file($image['tmp_name'], $destination);
+        if($admin->registerSeller($name,$username,$email,$hpass,$address,$contact,$filename)){
             echo 'registerSeller';
         }
         else{
             echo $admin->showMessage('Something went wrong! Try again later');
         }
     }
+    
 }
 
 //adding buyer account 
@@ -55,23 +64,32 @@ if(isset($_POST['action']) && $_POST['action'] == 'registerBuyer'){
     $username = $admin->test_input($_POST['username']);
     $email = $admin->test_input($_POST['email']);
     $pass = $admin->test_input($_POST['password']);
-
+    $address = $admin->test_input($_POST['address']);
+    $contact = $admin->test_input($_POST['contact']);
+    $image = $_FILES['image'];
     $hpass = sha1($pass);
 
-    if($admin->buyer_exist($username)){
+    if ($image['error'] !== UPLOAD_ERR_OK) {
+        echo $admin->showMessage('Error uploading profile picture!');
+    }
+    else if($admin->buyer_exist($username)){
         echo $admin->showMessage('This username is already exist!!!');
     }
     else if($admin->buyer_email($email)){
         echo $admin->showMessage('This email is already exist');
     }
     else{
-        if($admin->registerBuyer($name,$username,$email,$hpass)){
+        $filename = uniqid() . '-' . basename($image['name']);
+        $destination = '../../uploads/' . $filename;
+        move_uploaded_file($image['tmp_name'], $destination);
+        if($admin->registerBuyer($name,$username,$email,$hpass,$address,$contact,$filename)){
             echo 'registerBuyer';
         }
         else{
             echo $admin->showMessage('Something went wrong! Try again later');
         }
     }
+
 }
 
 ?>

@@ -24,10 +24,10 @@ class Admin extends Database{
 
         
     // add seller account
-    public function registerSeller($Name, $Username, $Email, $Password){
-        $sql = "INSERT INTO seller_login (name, username, email, password) VALUES (:name,:username,:email,:pass)";
+    public function registerSeller($Name, $Username, $Email, $Password,$Address,$Contact,$Image){
+        $sql = "INSERT INTO seller_login (name, username, email, password,address,contact_num,image) VALUES (:name,:username,:email,:pass,:address,:contact_num,:image)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute(['name'=>$Name, 'username'=>$Username, 'email'=>$Email, 'pass'=>$Password]);
+        $stmt->execute(['name'=>$Name, 'username'=>$Username, 'email'=>$Email, 'pass'=>$Password,'address'=>$Address, 'contact_num'=>$Contact, 'image'=>$Image]);
         return true;
     }
 
@@ -52,10 +52,10 @@ class Admin extends Database{
         }
 
             // add buyer account
-    public function registerBuyer($Name, $Username, $Email, $Password){
-        $sql = "INSERT INTO buyer_login (name, username, email, password) VALUES (:name,:username,:email,:pass)";
+    public function registerBuyer($Name, $Username, $Email, $Password,$Address,$Contact,$Image){
+        $sql = "INSERT INTO buyer_login (name, username, email, password,address,contact_num,image) VALUES (:name,:username,:email,:pass,:address,:contact_num,:image)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute(['name'=>$Name, 'username'=>$Username, 'email'=>$Email, 'pass'=>$Password]);
+        $stmt->execute(['name'=>$Name, 'username'=>$Username, 'email'=>$Email, 'pass'=>$Password,'address'=>$Address, 'contact_num'=>$Contact, 'image'=>$Image]);
         return true;
     }
 
