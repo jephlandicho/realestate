@@ -32,7 +32,7 @@ $mail->send();
 // echo $admin->showMessage('We have send you the code to verify your email, please check your email <a
 //     href="reset-code.php?email='.$email.'"> Enter Code here </a>');
 
-$sql = "UPDATE buyer_login SET code = '$code' WHERE email = '$email'";
+$sql = "UPDATE seller_login SET code = '$code' WHERE email = '$email'";
 $result = mysqli_query($con, $sql);
 }
 catch(Exception $e){
