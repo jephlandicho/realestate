@@ -270,7 +270,7 @@ select {
                                             <div style="margin-right: 20px;">
                                                 <label for="num-bedrooms"
                                                     style="display: block; text-align: left;">Bedroom:</label>
-                                                <input class="form-control" type="number" name="num-bedrooms">
+                                                <input id='beds' class="form-control" type="number" name="num-bedrooms">
                                             </div>
                                         </div>
                                     </div>
@@ -281,7 +281,7 @@ select {
                                             <div style="margin-right: 20px;">
                                                 <label for="garages"
                                                     style="display: block; text-align: left;">Garages:</label>
-                                                <input class="form-control" type="number" name="garages">
+                                                <input id='cars' class="form-control" type="number" name="garages">
                                             </div>
                                         </div>
                                     </div>
@@ -292,7 +292,7 @@ select {
                                             <div style="margin-right: 20px;">
                                                 <label for="comfort-room"
                                                     style="display: block; text-align: left;">Comfort Room:</label>
-                                                <input class="form-control" type="number" name="comfort-room">
+                                                <input id='cr' class="form-control" type="number" name="comfort-room">
                                             </div>
                                         </div>
                                     </div>
@@ -319,8 +319,19 @@ select {
                             <div class="form-group">
                                 <label for="category1">Land Area (SQM):</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="sqm" type="number" name="sqm" placeholder=""
-                                        required>
+                                    <input id='landsize' class="form-control" id="sqm" type="number" name="sqm"
+                                        placeholder="" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div id="floorarea" style="display: none;">
+                                    <div>
+                                        <label for="floorarea" style="display: block; text-align: left;">Floor
+                                            Area (SQM):</label>
+                                        <input id='floorsize' class="form-control" type="number" name="floorarea">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -332,22 +343,12 @@ select {
                                     <input class="form-control" id="price" name="price" pattern="[0-9,.]*"
                                         onkeyup="formatPrice(this)" placeholder="" required></input>
                                     <div class="input-group-append">
-                                        <a class="input-group-text" type="button">Predict</a>
+                                        <a class="input-group-text" type="button" onclick="submitData()">Suggest</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <div id="floorarea" style="display: none;">
-                                    <div>
-                                        <label for="floorarea" style="display: block; text-align: left;">Floor
-                                            Area (SQM):</label>
-                                        <input class="form-control" type="number" name="floorarea">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                     <h5 style="margin-top:20px;">
                         Property Photos
@@ -436,6 +437,32 @@ select {
         integrity="sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+    function submitData() {
+        let feature1 = parseInt(document.getElementById('beds').value) || 0;
+        let feature2 = parseInt(document.getElementById('cars').value) || 0;
+        let feature3 = parseInt(document.getElementById('cr').value) || 0;
+        let feature4 = parseInt(document.getElementById('landsize').value) || 0;
+        let feature5 = parseInt(document.getElementById('floorsize').value) || 0;
+        var data = {
+            "feature1": feature1,
+            "feature2": feature2,
+            "feature3": feature3,
+            "feature4": feature4,
+            "feature5": feature5
+        };
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:5000/predict",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json",
+            success: function(response) {
+                price = Math.round(response.prediction)
+                $("#price").val(price);
+            }
+        });
+    }
+
     function showOptions() {
         var propertyType = document.getElementById("property-type").value;
         var rooms = document.getElementById("num-bedrooms");
@@ -484,9 +511,13 @@ select {
     // Get the price textbox element
 
     var priceTextbox = document.getElementById("price");
-
+    // priceTextbox.addEventListener("keyup", formatPrice);
+    // priceTextbox.addEventListener("input", formatPrice);
+    priceTextbox.addEventListener("input", function() {
+        formatPrice();
+    });
     // Add a keyup event listener to the textbox
-    priceTextbox.addEventListener("keyup", function() {
+    function formatPrice() {
         // Retrieve the current value of the textbox
         var value = priceTextbox.value;
 
@@ -498,7 +529,7 @@ select {
 
         // Set the new value back to the textbox
         priceTextbox.value = value;
-    });
+    };
 
     function formatPrice(input) {
         // Remove any non-numeric characters
