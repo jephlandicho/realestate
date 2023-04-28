@@ -43,23 +43,30 @@ if(isset($_POST['action']) && $_POST['action'] == 'fetchProperties'){
         </thead>
         <tbody>';
 foreach ($data as $row){
+    $buttonClass = 'btn-primary';
+    $buttonDisabled = '';
+    $cursorStyle = '';
+    if ($row['status'] == 'Sold') {
+        $buttonClass = 'btn-success';
+        $buttonDisabled = 'disabled';
+    }
     $output .= '<tr>
             <td> '.$row['title'].' </td>
             <td> '.$row['price'].' </td>
             <td> '.$row['sqm'].' </td>
             <td> '.$row['type'].' </td>
             <td> '.$row['approved'].' </td>
-            <td> '.$row['status'].' </td>
-        </tr>';
+            <td> <button onclick="location.href=\'status.php?id='.$row['id'].'\'" class="btn '.$buttonClass.'" '.$buttonDisabled.'> '.$row['status'].' </button> </td>
+</tr>';
 }
-    $output .= '</tbody>
-    </table>';
+$output .= '</tbody>
+</table>';
 
-    echo $output;
+echo $output;
 }
 
 else{
-    echo '<h3 class="text-center text-secondary"> PROPERTY NOT FOUND !! </h3>';
+echo '<h3 class="text-center text-secondary"> PROPERTY NOT FOUND !! </h3>';
 }
 
 }

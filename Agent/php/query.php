@@ -41,7 +41,7 @@ class Admin extends Database{
         public function fetchProperties(){
             $ID = $_SESSION['ID'];
             $user_ID = implode($ID);
-            $sql = "SELECT `title`, `price`, `sqm`, `type`, `approved`, `status`
+            $sql = "SELECT seller_property.id, `title`, `price`, `sqm`, `type`, `approved`, `status`
             FROM seller_property
             INNER JOIN seller_login as sl
             ON seller_property.seller_id = sl.id WHERE seller_id = '$user_ID' ORDER BY date DESC;";
