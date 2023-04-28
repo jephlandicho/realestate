@@ -14,7 +14,6 @@ Dashboard (0)
 Need Help? (Optional, will add if there's time left)
 
 Backend:
-Displaying Accounts of different modules and need to add admin (/)
 Display profile pictures and other information about the admin (1)
 Add admin (0)
 
@@ -23,22 +22,16 @@ Agent:
 
 UI:
 Dashboard (0)
-Help button/Modals, when agent inserting the maps/location of the property (Clarence's Task) (/)
-Messages with customer via email (/)
 Edit properties (0)
 
 Backend:
 Predictive analytics for price, if posible (1)
 Display profile pictures and other information about the agent (0)
 Need forgot password and account confirmation using email (1)
-Notifications when the property have been approved (1)
 
 
 Customer:
 UI:
-Display all the properties in grid (/)
-Maps that will display the location of the property  (/)
-Messages with agent via email (/)
 Calculator, that can compute the amount if someone wants to buy the property per year (2)
 
 Backend:
@@ -53,3 +46,5 @@ Display user's account details.
 beds
 cars
 cr
+landsize
+floorsize
