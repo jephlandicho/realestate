@@ -72,7 +72,6 @@ if(isset($_POST['action']) && $_POST['action'] == 'fetchAdmin'){
         <th class="text-center"> Name </th>
         <th class="text-center"> Email </th>
         <th class="text-center"> Username </th>
-        <th class="text-center"> Address </th>
         <th class="text-center"> Contact Number </th>
         </thead>
         <tbody>';
@@ -81,7 +80,6 @@ foreach ($data as $row){
             <td> '.$row['name'].' </td>
             <td> '.$row['email'].' </td>
             <td> '.$row['username'].' </td>
-            <td> '.$row['address'].' </td>
             <td> '.$row['contact_num'].' </td>
         </tr>';
 }
@@ -108,15 +106,22 @@ if(isset($_POST['action']) && $_POST['action'] == 'fetchSeller'){
         <th class="text-center"> Username </th>
         <th class="text-center"> Address </th>
         <th class="text-center"> Contact Number </th>
+        <th class="text-center"> Status </th>
         </thead>
         <tbody>';
 foreach ($data as $row){
+    $color = 'text-warning';
+    if ($row['verification_status'] == 'Verified') {
+        $color = 'text-success';
+    }
+    
     $output .= '<tr>
             <td> '.$row['name'].' </td>
             <td> '.$row['email'].' </td>
             <td> '.$row['username'].' </td>
             <td> '.$row['address'].' </td>
             <td> '.$row['contact_num'].' </td>
+            <td > <p class="'.$color.'" style="font-weight: bold;"> '.$row['verification_status'].' </p></td>
         </tr>';
 }
     $output .= '</tbody>
@@ -142,15 +147,22 @@ if(isset($_POST['action']) && $_POST['action'] == 'fetchCust'){
         <th class="text-center"> Username </th>
         <th class="text-center"> Address </th>
         <th class="text-center"> Contact Number </th>
+        <th class="text-center"> Status </th>
         </thead>
         <tbody>';
 foreach ($data as $row){
+    $color = 'text-warning';
+    if ($row['verification_status'] == 'Verified') {
+        $color = 'text-success';
+    }
+    
     $output .= '<tr>
             <td> '.$row['name'].' </td>
             <td> '.$row['email'].' </td>
             <td> '.$row['username'].' </td>
             <td> '.$row['address'].' </td>
             <td> '.$row['contact_num'].' </td>
+            <td > <p class="'.$color.'" style="font-weight: bold;"> '.$row['verification_status'].' </p></td>
         </tr>';
 }
     $output .= '</tbody>
@@ -163,5 +175,38 @@ else{
     echo '<h3 class="text-center text-secondary"> CUSTOMER ACCOUNTS NOT FOUND !! </h3>';
 }
 
+}
+
+if(isset($_POST['action']) && $_POST['action'] == 'registerAdmin'){
+    $name = $admin->test_input($_POST['name']);
+    $username = $admin->test_input($_POST['username']);
+    $email = $admin->test_input($_POST['email']);
+    $pass = $admin->test_input($_POST['password']);
+    $contact = $admin->test_input($_POST['contact']);
+    $image = $_FILES['image'];
+    $hpass = sha1($pass);
+    
+    if ($image['error'] !== UPLOAD_ERR_OK) {
+        echo $admin->showMessage('Error uploading profile picture!');
+    }
+    else if($admin->seller_exist($username)){
+        echo $admin->showMessage('This username is already exist!!!');
+    }
+    else if($admin->seller_email($email)){
+        echo $admin->showMessage('This email is already exist');
+    }
+    else{
+        $filename = uniqid() . '-' . basename($image['name']);
+        $destination = '../../uploads/' . $filename;
+        move_uploaded_file($image['tmp_name'], $destination);
+        if($admin->registerAdmin($name,$username,$email,$hpass,$contact,$filename)){
+            echo 'registerAdmin';
+        }
+        else{
+            echo $admin->showMessage('Something went wrong! Try again later');
+        }
+
+    }
+    
 }
 ?>

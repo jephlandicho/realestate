@@ -138,13 +138,25 @@ if (isset($_GET["id"])) {
                                     <div class="title-box-d section-t4">
                                         <h3 class="title-d"> Message/Save</h3>
                                     </div>
+                                    <?php
+                        // $agentss = $_SESSION['ID'];
+                        // $myID = implode($agentss);
+                        $verify = "SELECT verified FROM `buyer_login` WHERE id='$sess_id'";
+                        $result2 = mysqli_query($con, $verify);
+                        $rows = mysqli_fetch_assoc($result2);
+                        $verification = $rows["verified"];
+                        $buttonDisabled = '';
+                        if ($verification == 0){
+                            $buttonDisabled = 'disabled';
+                        }
+                    ?>
                                     <button
                                         onclick="window.open('mailto:<?php echo $email ?>?subject=<?=$row['title'] ?>&body=<?='%0D%0A%0D%0A--%0D%0A'.$row['title'].'%0D%0A'.$row['price'].'&nbsp;pesos%0D%0AReal Estate Inquiry'?>', '_blank', 'menubar=yes,toolbar=yes,location=yes');"
-                                        class="btn btn-primary btn-lg">
+                                        class="btn btn-primary btn-lg" <?= $buttonDisabled ?>>
                                         Message
                                     </button>
                                     <button id="add_to_list" data-id="<?php echo $property_id; ?>"
-                                        class="btn btn-info btn-lg">
+                                        class="btn btn-info btn-lg" <?= $buttonDisabled ?>>
                                         Save Property
                                     </button>
                                 </div>

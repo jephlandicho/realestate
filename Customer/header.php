@@ -4,11 +4,15 @@
         header('location:index.php');
         exit();
     }
-
+    include 'php/connection.php'; 
+    global $con;
+    
 $info = $_SESSION['cus_info'];
 
 $infomation = implode($info);
 
+$cus_ID = $_SESSION['ID'];
+$C_ID = implode($cus_ID);
 ?>
 
 <!DOCTYPE html>
@@ -139,3 +143,15 @@ $infomation = implode($info);
         </form> -->
     </div>
 </nav>
+<?php
+        $verify = "SELECT verified FROM `buyer_login` WHERE id='$C_ID'";
+        $result2 = mysqli_query($con, $verify);
+        $rows = mysqli_fetch_assoc($result2);
+        $verification = $rows["verified"];
+
+        if ($verification == 0){
+        echo '<div class="alert alert-warning fixed-top w-100" role="alert" style=" margin-top: 60px;">
+        <strong>Verification Required:</strong> Please <a href="profile.php"> verify </a> your account to save/inquire property.
+        </div>';
+        }
+    ?>

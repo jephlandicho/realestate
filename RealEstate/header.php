@@ -64,15 +64,7 @@
             </li>
 
         </ul>
-
-
-
-
         </ul>
-        <!-- <form class="form-inline">
-       
-      <a class="btn btn-default" href=""><i class="fa fa-user fa-lg"></i> Profile</a>
-    </form> -->
     </div>
 </nav>
 
@@ -88,12 +80,6 @@
 </li>
 
 </ul>
-
-
-<!--<button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse"
-            data-bs-target="#navbarTogglerDemo01">
-            <i class="bi bi-search"></i>
-        </button>-->
 
 </div>
 </nav><!-- End Header/Navbar -->

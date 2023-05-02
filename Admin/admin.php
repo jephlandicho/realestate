@@ -20,7 +20,9 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-
+    <a href="add-admin.php" class="btn btn-primary btn-rounded mb-4">
+        <i class="fas fa-plus"></i> Add Admin
+    </a>
     <div class="table-responsive" id="showAdmin">
 
     </div>
