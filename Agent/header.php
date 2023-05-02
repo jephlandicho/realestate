@@ -91,7 +91,7 @@
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
                 <img src="../assets/img/favicon.png" alt="">
-                <span class="d-none d-lg-block">Real Estate</span>
+                <span class="d-none d-lg-block">Lupa Bahay</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->

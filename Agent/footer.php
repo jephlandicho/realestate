@@ -1,7 +1,7 @@
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
-        &copy; Copyright <strong><span>RealEstate</span></strong>. All Rights Reserved
+        &copy; Copyright <strong><span>RealEstate</span></strong>. All Rights Reserved<br>Disclaimer: Please note that the items listed on this website are for educational purposes only and are not intended for sale
     </div>
 
 

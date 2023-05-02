@@ -29,8 +29,8 @@
 <!-- ======= Header/Navbar ======= -->
 <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
     <a class="navbar-brand" href="#"><img src="realestate/assets/img/logo.png" alt="Logo" width="75" height="75"></a>
-    <a style="padding: 20px" class="navbar-brand text-brand" href="index.php">Real<span class="color-b"
-            style="color:#0000BA">Estate</span></a>
+    <a style="padding: 20px" class="navbar-brand text-brand" href="index.php">Lupa<span class="color-b"
+            style="color:#0000BA">Bahay</span></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
