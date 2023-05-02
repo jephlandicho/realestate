@@ -1,25 +1,9 @@
 <?php include 'header.php';
-    $errormsg="";
-    $msg="";
-    $imgerror="";
-    $user = $_SESSION['ID'];
-    $userID = implode($user);
     require_once 'php/connection.php';
     global $con;
     $query = "SELECT id FROM seller_property order by id desc";
     $result = mysqli_query($con,$query);
     $row = mysqli_fetch_array($result);
-    $lastid = $row['id'];
-    if(empty($lastid)){
-        $number = "RS-0000001";
-    }
-    else
-    {
-        $idd = str_replace('RS-','',$lastid);
-        $id = str_pad($idd + 1, 7, 0, STR_PAD_LEFT);
-        $number = 'RS-'.$id;
-    
-    }
 
     if(isset($_POST['add']))
     {
@@ -61,7 +45,7 @@
                     move_uploaded_file($tmp_name, $file_path);
                     
                     // Save file path to database
-                    $query = "INSERT INTO seller_property_photos VALUES ('','$number','$file_name')";
+                    $query = "INSERT INTO seller_property_photos VALUES ('','$number','$file_path')";
                     $result2 = mysqli_query($con, $query);
                 }
 
@@ -419,20 +403,6 @@ select {
                             <input class="form-control" name="Location" id="Location" type="text"></input>
                         </div>
                     </div>
-                    <?php
-                        // $agentss = $_SESSION['ID'];
-                        // $myID = implode($agentss);
-                        $verify = "SELECT verified FROM `seller_login` WHERE id='$userID'";
-                        $result2 = mysqli_query($con, $verify);
-                        $rows = mysqli_fetch_assoc($result2);
-                        $verification = $rows["verified"];
-                        $buttonDisabled = '';
-                        if ($verification == 0){
-                            $buttonDisabled = 'disabled';
-                        }
-                    ?>
-                    <input type="submit" value="Submit" class="btn btn-primary m-2" name="add"
-                        style="float:right; width:100px" <?php echo $buttonDisabled ?>>
                 </div>
             </form>
         </div>
@@ -447,32 +417,6 @@ select {
         integrity="sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-    function submitData() {
-        let feature1 = parseInt(document.getElementById('beds').value) || 0;
-        let feature2 = parseInt(document.getElementById('cars').value) || 0;
-        let feature3 = parseInt(document.getElementById('cr').value) || 0;
-        let feature4 = parseInt(document.getElementById('landsize').value) || 0;
-        let feature5 = parseInt(document.getElementById('floorsize').value) || 0;
-        var data = {
-            "feature1": feature1,
-            "feature2": feature2,
-            "feature3": feature3,
-            "feature4": feature4,
-            "feature5": feature5
-        };
-        $.ajax({
-            type: "POST",
-            url: "http://127.0.0.1:5000/predict",
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json",
-            success: function(response) {
-                price = Math.round(response.prediction)
-                $("#price").val(price);
-            }
-        });
-    }
-
     function showOptions() {
         var propertyType = document.getElementById("property-type").value;
         var rooms = document.getElementById("num-bedrooms");

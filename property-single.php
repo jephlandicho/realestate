@@ -100,7 +100,7 @@ if (isset($_GET["id"])) {
                                         ?>
                                 <div class="carousel-item-a swiper-slide d-flex justify-content-center">
                                     <?php
-                                    echo '<img src="'.$ro["photos"].'" alt="">';
+                                    echo '<img src="uploads/'.$ro["photos"].'" alt="">';
                                     ?>
                                 </div>
                                 <?php
@@ -275,10 +275,10 @@ if (isset($_GET["id"])) {
     <script>
     $(document).ready(function() {
         $("#add_to_list").on("click", function() {
-            window.location = '../Customer/';
+            window.location = 'Customer/';
         });
         $("#message").on("click", function() {
-            window.location = '../Customer/';
+            window.location = 'Customer/';
         });
         var lat = latitude;
         var lng = longitude;

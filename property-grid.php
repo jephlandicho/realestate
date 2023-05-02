@@ -110,8 +110,8 @@ if ($stmt = $con->prepare("SELECT * FROM seller_property WHERE approved = 'Yes' 
                     <div class="col-md-4">
                         <div class="card-box-a card-shadow">
                             <div class="img-box-a">
-                                <?php echo '<img src="../uploads/'.$row["image"].'" alt="" class="img-a img-fluid">'; ?>
-                                <!-- <img src="assets/img/property-1.jpg" alt="" class="img-a img-fluid"> -->
+                                <?php echo '<img src="uploads/'.$row["image"].'" alt="" class="img-a img-fluid">'; ?>
+
                             </div>
                             <div class="card-overlay">
                                 <div class="card-overlay-a-content">

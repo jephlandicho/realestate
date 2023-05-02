@@ -346,7 +346,7 @@ $(document).ready(function() {
 
                     d.seller_property_photos.forEach(function(i) {
                         $(".img_con").html($(".img_con").html() +
-                            "<div class='col-md-4'> <div class='image'><img src='" +
+                            "<div class='col-md-4'> <div class='image'><img src='../uploads/" +
                             i.photos +
                             "' data-ajax='" + i
                             .id + "'id='i" + i

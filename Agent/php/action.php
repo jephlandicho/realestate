@@ -40,16 +40,23 @@ if(isset($_POST['action']) && $_POST['action'] == 'fetchProperties'){
         <th class="text-center"> Type </th>
         <th class="text-center"> Approved </th>
         <th class="text-center"> Status </th>
+        <th class="text-center"> Actions </th>
         </thead>
         <tbody>';
 foreach ($data as $row){
     $buttonClass = 'btn-primary';
     $buttonDisabled = '';
     $cursorStyle = '';
+    $btnDis = '';
     if ($row['status'] == 'Sold') {
         $buttonClass = 'btn-success';
         $buttonDisabled = 'disabled';
+        $btnDis = 'disabled';
     }
+    if ($row['approved'] == 'No'){
+        $buttonDisabled = 'disabled';
+    }
+
     $output .= '<tr>
             <td> '.$row['title'].' </td>
             <td> '.$row['price'].' </td>
@@ -57,6 +64,8 @@ foreach ($data as $row){
             <td> '.$row['type'].' </td>
             <td> '.$row['approved'].' </td>
             <td> <button onclick="location.href=\'status.php?id='.$row['id'].'\'" class="btn '.$buttonClass.'" '.$buttonDisabled.'> '.$row['status'].' </button> </td>
+            <td> <button class="btn btn-info text-white" '.$btnDis.'> <i class="fas fa-edit"></i></button>
+            <button class="btn btn-danger" onclick="location.href=\'delete.php?id='.$row['id'].'\'" '.$btnDis.'> <i class="fas fa-trash-alt"></i> </button> </td>
 </tr>';
 }
 $output .= '</tbody>

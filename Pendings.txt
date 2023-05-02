@@ -15,7 +15,6 @@ Need Help? (Optional, will add if there's time left)
 
 Backend:
 Display profile pictures and other information about the admin (1)
-Add admin (0)
 
 
 Agent:
@@ -25,7 +24,6 @@ Dashboard (0)
 Edit properties (0)
 
 Backend:
-Predictive analytics for price, if posible (1)
 Display profile pictures and other information about the agent (0)
 Need forgot password and account confirmation using email (1)
 
@@ -36,15 +34,3 @@ Calculator, that can compute the amount if someone wants to buy the property per
 
 Backend:
 All the UI above (0)
-
-
-Backend:
-
-Least Priority:
-Display user's account details.
-
-beds
-cars
-cr
-landsize
-floorsize

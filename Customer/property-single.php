@@ -100,7 +100,7 @@ if (isset($_GET["id"])) {
                                         ?>
                                 <div class="carousel-item-a swiper-slide d-flex justify-content-center">
                                     <?php
-                                    echo '<img src="'.$ro["photos"].'" alt="">';
+                                    echo '<img src="../uploads/'.$ro["photos"].'" alt="">';
                                     ?>
                                 </div>
                                 <?php

@@ -48,7 +48,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'registerSeller'){
     }
     else{
         $filename = uniqid() . '-' . basename($image['name']);
-        $destination = '../../uploads/' . $filename;
+        $destination = '../uploads/' . $filename;
         move_uploaded_file($image['tmp_name'], $destination);
         if($admin->registerSeller($name,$username,$email,$hpass,$address,$contact,$filename)){
             echo 'registerSeller';
@@ -83,7 +83,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'registerBuyer'){
     }
     else{
         $filename = uniqid() . '-' . basename($image['name']);
-        $destination = '../../uploads/' . $filename;
+        $destination = '../uploads/' . $filename;
         move_uploaded_file($image['tmp_name'], $destination);
         if($admin->registerBuyer($name,$username,$email,$hpass,$address,$contact,$filename)){
             echo 'registerBuyer';

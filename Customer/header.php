@@ -74,10 +74,6 @@ $C_ID = implode($cus_ID);
             </li>
 
             <li class="nav-item">
-                <a class="nav-link " href="contact.php"> Contact</a>
-            </li>
-
-            <li class="nav-item">
                 <a class="nav-link " href="list.php"> <i class="fa fa-list-alt fa-lg"></i> Saved Properties</a>
             </li>
         </ul>
