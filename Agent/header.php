@@ -81,8 +81,6 @@
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src='https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>
-
-
 </head>
 
 <body>
@@ -206,6 +204,20 @@
         </nav><!-- End Icons Navigation -->
 
     </header><!-- End Header -->
+    <?php
+        $verify = "SELECT verified FROM `seller_login` WHERE id='$agent_id'";
+        $result2 = mysqli_query($con, $verify);
+        $rows = mysqli_fetch_assoc($result2);
+        $verification = $rows["verified"];
+
+        if ($verification == 0){
+        echo '<div class="alert alert-warning fixed-top w-100" role="alert" style=" margin-left: 300px; margin-top: 60px;">
+        <strong>Verification Required:</strong> Please <a href="profile.php"> verify </a> your account to post property.
+        </div>';
+        }
+    ?>
+
+
 
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">

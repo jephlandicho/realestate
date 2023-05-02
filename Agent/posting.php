@@ -419,10 +419,20 @@ select {
                             <input class="form-control" name="Location" id="Location" type="text"></input>
                         </div>
                     </div>
+                    <?php
+                        // $agentss = $_SESSION['ID'];
+                        // $myID = implode($agentss);
+                        $verify = "SELECT verified FROM `seller_login` WHERE id='$userID'";
+                        $result2 = mysqli_query($con, $verify);
+                        $rows = mysqli_fetch_assoc($result2);
+                        $verification = $rows["verified"];
+                        $buttonDisabled = '';
+                        if ($verification == 0){
+                            $buttonDisabled = 'disabled';
+                        }
+                    ?>
                     <input type="submit" value="Submit" class="btn btn-primary m-2" name="add"
-                        style="float:right; width:100px">
-
-
+                        style="float:right; width:100px" <?php echo $buttonDisabled ?>>
                 </div>
             </form>
         </div>
