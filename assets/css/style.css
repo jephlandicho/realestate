@@ -13,6 +13,10 @@ a {
   text-decoration: none;
 }
 
+.color-b {
+  color: #00008B;
+}
+
 a:hover {
   color: #717ff5;
   text-decoration: none;
