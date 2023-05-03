@@ -47,33 +47,6 @@ require_once 'php/dashi.php';
                     </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Most Sold Property</h5>
-                            <!-- Donut Chart -->
-                            <div id="donutChart"></div>
-
-                            <script>
-                            document.addEventListener("DOMContentLoaded", () => {
-                                new ApexCharts(document.querySelector("#donutChart"), {
-                                    series: [44, 55, 13, 43, 22],
-                                    chart: {
-                                        height: 250,
-                                        type: 'donut',
-                                        toolbar: {
-                                            show: true
-                                        }
-                                    },
-                                    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-                                }).render();
-                            });
-                            </script>
-                            <!-- End Donut Chart -->
-
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </section>

@@ -103,18 +103,57 @@ require_once 'php/dashi.php';
                     <!-- Column Chart -->
               <div id="columnChart"></div>
 
+
+<?php 
+// $sql = "SELECT seller_id, SUM(price) AS price
+//         FROM seller_property
+//         WHERE status = 'Sold'";
+// $result = mysqli_query($con, $sql);
+
+// $row = mysqli_fetch_assoc($result);
+// $price = $row['price'];
+// $seller = $row['seller_id'];
+
+// $quer = "SELECT username FROM seller_login WHERE id = $seller";
+// $result = mysqli_query($con, $quer);
+
+// $row = mysqli_fetch_assoc($result);
+// $uname = $row['username'];
+
+// $quer = "SELECT name FROM seller_login WHERE id = $seller";
+// $result = mysqli_query($con, $quer);
+
+// $row = mysqli_fetch_assoc($result);
+// $name = $row['name'];
+
+
+//end
+ ?>
               <script>
                 document.addEventListener("DOMContentLoaded", () => {
                   new ApexCharts(document.querySelector("#columnChart"), {
                     series: [{
                       name: 'Net Profit',
-                      data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-                    }, {
-                      name: 'Revenue',
-                      data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-                    }, {
-                      name: 'Free Cash Flow',
-                      data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                      data: ['<?php 
+                                              $sql = "SELECT seller_id, SUM(price) AS price
+                                                FROM seller_property
+                                                WHERE status = 'Sold'
+                                                GROUP BY seller_id
+                                                LIMIT 5;";
+                                              $result = mysqli_query($con, $sql);
+                                              $row = mysqli_fetch_assoc($result);
+                                              $num_rows = mysqli_num_rows($result);
+                                              $price = $row['price'];
+                                              $seller = $row['seller_id'];
+                                              
+                                              for ($x = 0; $x <= $num_rows; $x++) {
+                                                echo $price;
+                                                echo $seller;
+                                              }
+                                               ;
+                      
+                      
+                                              ?>']
                     }],
                     chart: {
                       type: 'bar',
@@ -136,7 +175,15 @@ require_once 'php/dashi.php';
                       colors: ['transparent']
                     },
                     xaxis: {
-                      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                      categories: ['<?php
+                      $quer = "SELECT name FROM seller_login WHERE id = $seller";
+                      $result = mysqli_query($con, $quer);
+
+                      while ($row = mysqli_fetch_assoc($result)) {
+                        $name = $row['name'];
+                        echo $name;
+                      }
+                      ?>'],
                     },
                     yaxis: {
                       title: {

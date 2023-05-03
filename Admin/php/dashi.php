@@ -78,4 +78,43 @@ $row = mysqli_fetch_assoc($result);
 $sold = $row['sold'];
 // end of sold
 
- ?>
+
+
+//property prices 
+// $sql = "SELECT seller_id, MAX(price) as price
+//         FROM seller_property
+//         WHERE status = 'Sold'";
+// $result = mysqli_query($con, $sql);
+
+// $row = mysqli_fetch_assoc($result);
+// $price = $row['price'];
+// $seller = $row['seller_id'];
+
+// $quer = "SELECT username FROM seller_login WHERE id = $seller";
+// $result = mysqli_query($con, $quer);
+
+// $row = mysqli_fetch_assoc($result);
+// $uname = $row['username'];
+
+// $quer = "SELECT name FROM seller_login WHERE id = $seller";
+// $result = mysqli_query($con, $quer);
+
+// $row = mysqli_fetch_assoc($result);
+// $name = $row['name'];
+// //end
+
+//seller name in
+
+
+
+
+
+
+
+
+
+
+?>
+
+
+
