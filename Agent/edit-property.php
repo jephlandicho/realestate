@@ -32,10 +32,10 @@ if(isset($_POST['edit']))
         $img_size = $_FILES['mainimage']['size'];
         $temp_name  =$_FILES['mainimage']['tmp_name'];
         move_uploaded_file($temp_name,"../uploads/$image");
-        $sql5 = "UPDATE seller_property SET title='$title',more_info='$description',price='$price',sqm='$sqm',type='$typeofProp',latitude='$Latitude',longitude='$Longitude',location='$Location',bedroom='$rooms',garages='$garages',cr='$cr',image='$image',floor_sqm='$floorarea' WHERE id='$id'";
+        $sql5 = "UPDATE seller_property SET title='$title',more_info='$description',price='$price',sqm='$sqm',approved='No',type='$typeofProp',latitude='$Latitude',longitude='$Longitude',location='$Location',bedroom='$rooms',garages='$garages',cr='$cr',image='$image',floor_sqm='$floorarea' WHERE id='$id'";
         $result5 = mysqli_query($con, $sql5);
     } else {
-        $sql6 = "UPDATE seller_property SET title='$title',more_info='$description',price='$price',sqm='$sqm',type='$typeofProp',latitude='$Latitude',longitude='$Longitude',location='$Location',bedroom='$rooms',garages='$garages',cr='$cr',floor_sqm='$floorarea' WHERE id='$id'";
+        $sql6 = "UPDATE seller_property SET title='$title',more_info='$description',price='$price',sqm='$sqm',approved='No',type='$typeofProp',latitude='$Latitude',longitude='$Longitude',location='$Location',bedroom='$rooms',garages='$garages',cr='$cr',floor_sqm='$floorarea' WHERE id='$id'";
         $result6 = mysqli_query($con, $sql6);
     }
             

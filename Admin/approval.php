@@ -137,6 +137,11 @@ $result = $con->query($sql);
                                 class="btn btn-success btn_approved">
                                 <i class="bi bi-check-circle"></i>
                             </button>
+                            <button data-id4="<?php echo $row["seller_id"]?>" data-id5="<?php echo $row["id"]?>"
+                                data-id6="<?php echo $row["title"]?>" title="Disapproved Property" id="btn_disapproved"
+                                type="button" class="btn btn-danger btn_disapproved">
+                                <i class="bi bi-x-circle"></i>
+                            </button>
                         </div>
 
                     </div>
@@ -446,6 +451,36 @@ $(document).ready(function() {
         });
 
     });
+    $(".btn_disapproved").on("click", function() {
+        var dataId = $(this).attr("data-id4");
+        var dataId1 = $(this).attr("data-id5");
+        var dataId2 = $(this).attr("data-id6");
+        // console.log(dataId, dataId1, dataId2)
+        $.ajax({
+            method: 'POST',
+            url: "z-disapproved.php",
+            data: {
+                dataId: dataId,
+                dataId1: dataId1,
+                dataId2: dataId2
+            },
+            success: function(response) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Disapproved',
+                    text: 'Property Disapproved',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(function() {
+                    // this gets run after the OK button is clicked
+                    window.location = 'approval.php';
+                });
+
+            }
+        });
+
+    });
+
     $('#imagesModal').on('hidden.bs.modal', function() {
         location.reload();
     })
