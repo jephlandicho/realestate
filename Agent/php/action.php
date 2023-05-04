@@ -63,8 +63,9 @@ foreach ($data as $row){
             <td> '.$row['sqm'].' </td>
             <td> '.$row['type'].' </td>
             <td> '.$row['approved'].' </td>
+            
             <td> <button onclick="location.href=\'status.php?id='.$row['id'].'\'" class="btn '.$buttonClass.'" '.$buttonDisabled.'> '.$row['status'].' </button> </td>
-            <td> <button class="btn btn-info text-white" '.$btnDis.'> <i class="fas fa-edit"></i></button>
+            <td> <button class="btn btn-info text-white" onclick="location.href=\'edit-property.php?id='.$row['id'].'\'" '.$btnDis.'> <i class="fas fa-edit"></i></button>
             <button class="btn btn-danger" onclick="location.href=\'delete.php?id='.$row['id'].'\'" '.$btnDis.'> <i class="fas fa-trash-alt"></i> </button> </td>
 </tr>';
 }
