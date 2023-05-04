@@ -27,8 +27,8 @@ require_once 'php/dashi.php';
                 <div class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Count of Buyer</h5>
-                            <h2><?php echo $buyer_count; ?></h2>
+                            <center><h5 class="card-title">Count of Buyer</h5></center>
+                            <center><h2><?php echo $buyer_count; ?></h2></center>
                         </div>
                     </div>
                 </div>
@@ -36,8 +36,8 @@ require_once 'php/dashi.php';
                 <div class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Count of Agent</h5>
-                            <h2><?php echo $agent_count; ?></h2>
+                            <center><h5 class="card-title">Count of Agent</h5></center>
+                            <center><h2><?php echo $agent_count; ?></h2></center>
                         </div>
                     </div>
                 </div>
@@ -45,8 +45,8 @@ require_once 'php/dashi.php';
                 <div class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Approved Property</h5>
-                            <h2><?php echo $total_app; ?></h2>
+                            <center><h5 class="card-title">Approved Property</h5></center>
+                            <center><h2><?php echo $total_app; ?></h2></center>
                         </div>
                     </div>
                 </div>
@@ -54,8 +54,8 @@ require_once 'php/dashi.php';
                 <div class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Pending Property</h5>
-                            <h2><?php echo $notyet; ?></h2>
+                            <center><h5 class="card-title">Pending Property</h5></center>
+                            <center><h2><?php echo $notyet; ?></h2></center>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@ require_once 'php/dashi.php';
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Property Status Count</h5>
+                            <center><h5 class="card-title">Property Status Count</h5></center>
 
                             <!-- Pie Chart -->
                             <div id="property"></div>
@@ -99,7 +99,7 @@ require_once 'php/dashi.php';
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Highest Price of Property Sold</h5>
+                            <center><h5 class="card-title">Highest Price of Property Sold</h5></center>
                             <!-- Column Chart -->
                             <div id="columnChart"></div>
 
@@ -202,7 +202,7 @@ require_once 'php/dashi.php';
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Agent with Most Sales</h5>
+                            <center><h5 class="card-title">Agent with Most Sales</h5></center>
                             <!-- Bar Chart -->
                             <div id="barChart"></div>
 
@@ -210,6 +210,7 @@ require_once 'php/dashi.php';
                             document.addEventListener("DOMContentLoaded", () => {
                                 new ApexCharts(document.querySelector("#barChart"), {
                                     series: [{
+                                        name: 'Total Sales',
                                         data: <?php echo json_encode($data); ?>
                                         
                                     }],
