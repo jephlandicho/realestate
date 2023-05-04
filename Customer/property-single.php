@@ -31,6 +31,9 @@ if (isset($_GET["id"])) {
     $q1 = "SELECT * FROM `amenities` WHERE `property_id` = '$property_id'";
     $r1 = $con->query($q1);
 
+    // $result1 = $con->query($sql);
+    // $row2 = $result1->fetch_assoc();
+    
 }
 ?>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
@@ -209,6 +212,67 @@ if (isset($_GET["id"])) {
                                         </ul>
                                     </div>
                                 </div>
+
+                                <div class="property-summary">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="title-box-d section-t4">
+                                                <h3 class="title-d">Price Suggestion</h3>
+                                                <p> In this section we can suggest a price depending on the number of
+                                                    beds,bath,garage,landarea or floorarea</p>
+                                            </div>
+                                            <form method="post">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="landArea">Land Area(SQM):</label>
+                                                            <input value="<?= $row["sqm"]?>" type="number"
+                                                                class="form-control" id="landArea">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="floorArea">Floor Area(SQM):</label>
+                                                            <input value="<?= $row["floor_sqm"]?>" type="number"
+                                                                class="form-control" id="floorArea">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="bedrooms">Bedrooms:</label>
+                                                            <input value="<?= $row["bedroom"]?>" type="number"
+                                                                class="form-control" id="bedrooms">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="bathrooms">Bathrooms:</label>
+                                                            <input value="<?= $row["cr"]?>" type="number"
+                                                                class="form-control" id="bathrooms">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="garage">Garage:</label>
+                                                            <input value="<?= $row["garages"]?>" type="number"
+                                                                class="form-control" id="garage">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="price">Price:</label>
+                                                            <input pattern="[0-9,.]*" onkeyup="formatPrice(this)"
+                                                                class="form-control" name="price" id="price">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a type="button" class="btn btn-primary"
+                                                    onclick="submitData()">Suggest</a>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-md-7 col-lg-7 section-md-t3">
@@ -287,6 +351,32 @@ if (isset($_GET["id"])) {
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <script>
+    function submitData() {
+        let feature1 = parseInt(document.getElementById('bedrooms').value) || 0;
+        let feature2 = parseInt(document.getElementById('garage').value) || 0;
+        let feature3 = parseInt(document.getElementById('bathrooms').value) || 0;
+        let feature4 = parseInt(document.getElementById('landArea').value) || 0;
+        let feature5 = parseInt(document.getElementById('floorArea').value) || 0;
+
+        var data = {
+            "feature1": feature1,
+            "feature2": feature2,
+            "feature3": feature3,
+            "feature4": feature4,
+            "feature5": feature5
+        };
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:5000/predict",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json",
+            success: function(response) {
+                price = Math.round(response.prediction)
+                $("#price").val(price);
+            }
+        });
+    }
     $(document).ready(function() {
         $("#add_to_list").on("click", function() {
             var dataId = $(this).attr("data-id");
@@ -341,4 +431,43 @@ if (isset($_GET["id"])) {
             window.dispatchEvent(new Event("resize"));
         }, 500);
     });
+
+    var priceTextbox = document.getElementById("price");
+    // priceTextbox.addEventListener("keyup", formatPrice);
+    // priceTextbox.addEventListener("input", formatPrice);
+    priceTextbox.addEventListener("input", function() {
+        formatPrice();
+    });
+    // Add a keyup event listener to the textbox
+    function formatPrice() {
+        // Retrieve the current value of the textbox
+        var value = priceTextbox.value;
+
+        // Remove any existing commas from the value
+        value = value.replace(/,/g, "");
+
+        // Insert a comma every three digits
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+        // Set the new value back to the textbox
+        priceTextbox.value = value;
+    };
+
+    function formatPrice(input) {
+        // Remove any non-numeric characters
+        var value = input.value.replace(/[^0-9.]/g, '');
+
+        // Format the number with commas and decimals
+        var parts = value.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        if (parts.length > 1) {
+            parts[1] = parts[1].slice(0, 2);
+            value = parts.join('.');
+        } else {
+            value = parts[0];
+        }
+
+        // Set the formatted value back to the input
+        input.value = value;
+    }
     </script>
