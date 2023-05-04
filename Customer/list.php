@@ -3,15 +3,17 @@
 
 <body>
     <main id="main" class="main">
-
-        <div class="pagetitle">
-            <h1>Saved Properties</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item active">Saved Properties</li>
-                </ol>
-            </nav>
-        </div><!-- End Page Title -->
+        <section class="intro-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-lg-8">
+                        <div class="title-single-box">
+                            <h1 class="title-single">Saved Properties</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- End Intro Single-->
         <div class="container">
             <div class="table-responsive" id="showProperties">
             </div>

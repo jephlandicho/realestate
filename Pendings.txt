@@ -1,36 +1,16 @@
-Pendings:
-Priority (0)
-Medyo Priority (1)
-Optional (2)
-Done (/)
------------------------------------------
 Public View:
 UI: None
 Backend: Display properties like in the customer view (1)
 
 Admin:
-UI:
-Dashboard (0)
-Need Help? (Optional, will add if there's time left)
 
 Backend:
 Display profile pictures and other information about the admin (1)
 
-
-Agent:
-
-UI:
-Dashboard (0)
-Edit properties (0)
-
 Backend:
 Display profile pictures and other information about the agent (0)
-Need forgot password and account confirmation using email (1)
 
 
 Customer:
-UI:
-Calculator, that can compute the amount if someone wants to buy the property per year (2)
-
 Backend:
-All the UI above (0)
+Display profile pictures and other information about the customer (0)

@@ -10,6 +10,8 @@
 
  $infomation = implode($info);
  
+ $user = $_SESSION['username'];
+
  $count = "SELECT COUNT(*) as total_rows FROM notifications WHERE `user_type` = 'Admin' AND `status` = 'Unread'";
  $result = mysqli_query($con, $count);
  $row = mysqli_fetch_assoc($result);
@@ -17,6 +19,11 @@
 
  $sql = "SELECT * FROM notifications WHERE `user_type` = 'Admin' AND `status` = 'Unread'";
  $result1 = mysqli_query($con, $sql);
+
+ $sql2 = "SELECT * FROM admin_login WHERE username='$user'";
+ $result3 = mysqli_query($con, $sql2);
+ $row = mysqli_fetch_assoc($result3);
+ $img = $row['image'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,7 +88,7 @@
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
-                <img src="../assets/img/favicon.png" alt="">
+
                 <span class="d-none d-lg-block"><span style="color: black;">Lupa</span>Bahay</span>
 
             </a>
@@ -146,6 +153,7 @@
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <span class="d-none d-md-block dropdown-toggle ps-2">
+                            <img src="../uploads/<?php echo $img ?>" alt="">
                             <?php echo $infomation ?>
                         </span>
                     </a><!-- End Profile Iamge Icon -->
@@ -170,13 +178,6 @@
                         </li>
                         <li>
                             <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                                <i class="bi bi-question-circle"></i>
-                                <span>Need Help?</span>
-                            </a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">

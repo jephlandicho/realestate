@@ -44,7 +44,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'fetchProperties'){
         <tbody>';
 foreach ($data as $row){
     $output .= '<tr>
-            <td> '.$row['title'].' </td>
+            <td> <a href="property-single.php?id='.$row["id"].'"> '.$row['title'].' </a></td>
             <td> '.$row['price'].' </td>
             <td> '.$row['type'].' </td>
             <td> '.$row['name'].' </td>

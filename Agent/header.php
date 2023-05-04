@@ -9,7 +9,7 @@
  $info = $_SESSION['seller_info'];
 
  $infomation = implode($info);
-
+ $user = $_SESSION['seller_username'];
     $id = $_SESSION['ID'];
     $agent_id = implode($id);
 
@@ -20,6 +20,11 @@
    
     $sql = "SELECT * FROM notifications WHERE `user_type` = 'Agent' AND `user_target` = '$agent_id' AND `status` = 'Unread'";
     $result1 = mysqli_query($con, $sql);
+
+    $sql2 = "SELECT * FROM seller_login WHERE username='$user'";
+    $result3 = mysqli_query($con, $sql2);
+    $row = mysqli_fetch_assoc($result3);
+    $img = $row['image'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -154,6 +159,7 @@
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <span class="d-none d-md-block dropdown-toggle ps-2">
+                            <img src="../uploads/<?php echo $img ?>" alt="">
                             <?php echo $infomation ?>
                         </span>
                     </a><!-- End Profile Iamge Icon -->
@@ -178,13 +184,6 @@
                         </li>
                         <li>
                             <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                                <i class="bi bi-question-circle"></i>
-                                <span>Need Help?</span>
-                            </a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
