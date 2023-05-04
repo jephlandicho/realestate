@@ -89,6 +89,11 @@
                                                 type="submit">Login</button>
                                         </div>
                                     </form>
+                                    <br>
+                                    <p class="small mb-0">Doesn't have an account? <a href="../signup.php">Sign up
+                                        </a></p>
+                                    <p class="small mb-0"> <a href="#" id="forgot-link">Forgot Password?
+                                        </a></p>
 
                                 </div>
                             </div>
@@ -101,7 +106,27 @@
 
         </div>
     </main><!-- End #main -->
-
+    <div class="modal" id="modal-forgotpass">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="text-dark">RESET PASSWORD</h3>
+                </div>
+                <div class="modal-body">
+                    <p id="up-message" class="text-dark"></p>
+                    <form id="modal-form">
+                        <label style="font-size:12px;"> Email </label>
+                        <input type="email" class="form-control my-2" placeholder="Email" id="email" name="email"
+                            required>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn_reset_pass">Submit</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btn_close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Vendor JS Files -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
         integrity="sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
@@ -159,6 +184,28 @@
             }
         });
     });
+    // for resetting password
+    $(document).on('click', '#forgot-link', function() {
+        $('#modal-forgotpass').modal('show');
+    })
+
+    $('#btn_reset_pass').click(function(e) {
+        if ($("#modal-form")[0].checkValidity()) {
+            e.preventDefault();
+            $('#btn_reset_pass').val('Please Wait...');
+
+            $.ajax({
+                url: 'php/action.php',
+                method: 'POST',
+                data: $("#modal-form").serialize() + '&action=forgotpass',
+                success: function(response) {
+                    $("#btn_reset_pass").val('Reset Password');
+                    $("#modal-form")[0].reset();
+                    $("#up-message").html(response);
+                }
+            })
+        }
+    })
     </script>
 </body>
 

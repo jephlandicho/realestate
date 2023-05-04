@@ -13,7 +13,7 @@ $code = rand(999999, 111111);
 $code = str_shuffle($code);
 
 try{
-$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+// $mail->SMTPDebug = SMTP::DEBUG_SERVER;
 $mail->isSMTP();
 $mail->Host = 'smtp.gmail.com';
 $mail->SMTPAuth = true;
@@ -23,11 +23,11 @@ $mail->Password = 'vgilenumidpjorop';
 $mail->SMTPSecure = 'ssl';
 $mail->Port = 465;
 
-$mail->setFrom('landichojehosaphat@gmail.com','Real Estate');
+$mail->setFrom('landichojehosaphat@gmail.com','Lupa Bahay');
 $mail->addAddress($email);
 $mail->isHTML(true);
 $mail->Subject = 'Verify Email';
-$mail->Body = '<h3> Enter the code below to verify you email <br> Code:&nbsp; '.$code.' <br> Regards <br> Real Estate </h3>';
+$mail->Body = '<h3> Enter the code below to verify you email <br> Code:&nbsp; '.$code.' <br> Regards <br> lupabahay.online </h3>';
 $mail->send();
 // echo $admin->showMessage('We have send you the code to verify your email, please check your email <a
 //     href="reset-code.php?email='.$email.'"> Enter Code here </a>');

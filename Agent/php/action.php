@@ -82,5 +82,50 @@ echo '<h3 class="text-center text-secondary"> PROPERTY NOT FOUND !! </h3>';
 }
 
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+require '../vendor/autoload.php';
+$mail = new PHPMailer(true);
+// handle forgot password ajax requests
+if(isset($_POST['action']) && $_POST['action'] == 'forgotpass'){
 
+    $email = $admin->test_input($_POST['email']);
+
+    $user_found = $admin->cust_email($email);
+
+    if($user_found != null){
+        $code = rand(999999, 111111);
+        $code = str_shuffle($code);
+
+        $admin->forgotPassword($code, $email);
+
+        try{
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER; 
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'landichojehosaphat@gmail.com';
+            $mail->Password = 'vgilenumidpjorop';
+
+            $mail->SMTPSecure = 'ssl';
+            $mail->Port = 465;
+
+            $mail->setFrom('landichojehosaphat@gmail.com','Lupa Bahay');
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = 'Reset Password';
+            $mail->Body = '<h3> Enter the code below to reset your password <br> Code:&nbsp; '.$code.' <br> Regards <br> lupabahay.online </h3>';
+            $mail->send();
+            echo $admin->showMessage('We have send you the code to reset your password in your email, please check your email <a href="reset-code.php?email='.$email.'"> Enter Code here </a>');
+
+        }
+        catch(Exception $e){
+            echo $admin->showMessage('Something went wrong, please try again');
+        }
+    }
+    else{
+        echo $admin->showMessage('This email is not registered');
+    }
+}
 ?>

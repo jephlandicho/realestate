@@ -99,7 +99,7 @@
                         <br>
                         <br>
                         <a id="logbtn" href="Customer/" class="btn btn-secondary">Log In as
-                            Buyer</a>
+                            Customer</a>
                     </center>
                     <center>
                         <br><br>

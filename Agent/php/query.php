@@ -51,5 +51,31 @@ class Admin extends Database{
             return $result;
         }
 
+        public function cust_email($email){
+            $sql = "SELECT email FROM seller_login WHERE email = :email"; 
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['email' => $email]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $row;
+        }
+
+        public function forgotPassword($code,$email){
+            $sql = "UPDATE `seller_login` SET code = :code WHERE email = :email";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':code' => $code,':email' => $email]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            return true;
+        }
+
+            // update new password
+    public function update_password($pass,$email){
+        $sql = "UPDATE `seller_login` SET code = '', password=:password WHERE email = :email";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':password' => $pass,':email' => $email]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return true;
+    }
     }
 ?>
