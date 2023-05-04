@@ -10,9 +10,15 @@
 $info = $_SESSION['cus_info'];
 
 $infomation = implode($info);
-
+$user = $_SESSION['customer_username'];
 $cus_ID = $_SESSION['ID'];
 $C_ID = implode($cus_ID);
+
+
+$sql2 = "SELECT * FROM buyer_login WHERE username='$user'";
+$result3 = mysqli_query($con, $sql2);
+$row = mysqli_fetch_assoc($result3);
+$img = $row['image'];
 ?>
 
 <!DOCTYPE html>
@@ -84,12 +90,15 @@ $C_ID = implode($cus_ID);
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0 " href="#" data-bs-toggle="dropdown">
                     <span class="d-none d-md-block dropdown-toggle ps-2">
+                        <img style="max-height: 36px;
+    " src="../uploads/<?php echo $img ?>" alt="">
                         <?php echo $infomation ?>
                     </span>
                 </a><!-- End Profile Iamge Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
+
                         <h6><?php echo $infomation  ?></h6>
                         <span></span>
                     </li>

@@ -6,6 +6,11 @@ $userID = implode($user);
 $sql = "SELECT * FROM `buyer_login` WHERE `id` = '$userID'";
 $result = $con->query($sql);
 
+
+$result3 = mysqli_query($con, $sql);
+$row = mysqli_fetch_assoc($result3);
+$name = $row['name'];
+$img = $row['image'];
 ?>
 
 <div class="container">
@@ -36,11 +41,6 @@ $result = $con->query($sql);
                                 <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit
                                         Profile</button>
-                                </li>
-
-                                <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab"
-                                        data-bs-target="#profile-change-password">Change Password</button>
                                 </li>
 
                             </ul>
@@ -95,7 +95,7 @@ $result = $con->query($sql);
                                                 Name</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="fullName" type="text" class="form-control" id="fullName"
-                                                    value="">
+                                                    value="<?php echo $row["name"] ?>">
                                             </div>
                                         </div>
 
@@ -104,15 +104,16 @@ $result = $con->query($sql);
                                                 class="col-md-4 col-lg-3 col-form-label">Address</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="address" type="text" class="form-control" id="Address"
-                                                    value="">
+                                                    value="<?php echo $row["address"] ?>">
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Contact Number</label>
+                                            <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Contact
+                                                Number</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="phone" type="text" class="form-control" id="Phone"
-                                                    value="">
+                                                    value="<?php echo $row["contact_num"] ?>">
                                             </div>
                                         </div>
 
@@ -120,7 +121,15 @@ $result = $con->query($sql);
                                             <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input name="email" type="email" class="form-control" id="Email"
-                                                    value="">
+                                                    value="<?php echo $row["email"] ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="Email" class="col-md-4 col-lg-3 col-form-label">Password</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="password" type="password" class="form-control"
+                                                    id="password" value="<?php echo $row["password"] ?>">
                                             </div>
                                         </div>
 
@@ -129,46 +138,6 @@ $result = $con->query($sql);
                                             <button type="submit" class="btn btn-primary">Save Changes</button>
                                         </div>
                                     </form><!-- End Profile Edit Form -->
-
-                                </div>
-
-                                <div class="tab-pane fade pt-3" id="profile-change-password">
-                                    <!-- Change Password Form -->
-                                    <form>
-
-                                        <div class="row mb-3">
-                                            <label for="currentPassword"
-                                                class="col-md-4 col-lg-3 col-form-label">Current
-                                                Password</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="password" type="password" class="form-control"
-                                                    id="currentPassword">
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
-                                                Password</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="newpassword" type="password" class="form-control"
-                                                    id="newPassword">
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter
-                                                New
-                                                Password</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="renewpassword" type="password" class="form-control"
-                                                    id="renewPassword">
-                                            </div>
-                                        </div>
-
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Change Password</button>
-                                        </div>
-                                    </form><!-- End Change Password Form -->
 
                                 </div>
                                 <?php 
