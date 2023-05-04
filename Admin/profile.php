@@ -83,7 +83,7 @@ $result = $con->query($sql);
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Contact Number</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input name="phone" type="text" class="form-control" id="Phone" value="">
                                         </div>
@@ -96,41 +96,7 @@ $result = $con->query($sql);
                                         </div>
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter
-                                            Profile</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="twitter" type="text" class="form-control" id="Twitter"
-                                                value="">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook
-                                            Profile</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="facebook" type="text" class="form-control" id="Facebook"
-                                                value="">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram
-                                            Profile</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="instagram" type="text" class="form-control" id="Instagram"
-                                                value="">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin
-                                            Profile</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="linkedin" type="text" class="form-control" id="Linkedin"
-                                                value="">
-                                        </div>
-                                    </div>
+                                  
 
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Save Changes</button>
