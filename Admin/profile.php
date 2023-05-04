@@ -1,8 +1,16 @@
-<?php include 'header.php'; ?>
+<?php include 'header.php'; 
+require_once 'php/connection.php';
+global $con;
+$user = $_SESSION['username'];
+// $username = implode($user);
+$sql = "SELECT * FROM `admin_login` WHERE `username` = '$user'";
+$result = $con->query($sql);
+?>
 <main id="main" class="main">
 
     <div class="pagetitle">
         <h1>Profile</h1>
+
         <nav>
 
         </nav>
@@ -37,32 +45,26 @@
                         <div class="tab-content pt-2">
 
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                <h5 class="card-title">About</h5>
-                                <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores
-                                    cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure
-                                    rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at
-                                    unde.</p>
+                                <?php
+                        if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                        ?>
 
                                 <h5 class="card-title">Profile Details</h5>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                                    <div class="col-lg-9 col-md-8">Clarence Andino</div>
+                                    <div class="col-lg-9 col-md-8"><?php echo $row["name"] ?></div>
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-4 label">Address</div>
-                                    <div class="col-lg-9 col-md-8">Dyan Lang Str.</div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label">Phone</div>
-                                    <div class="col-lg-9 col-md-8">+63 910 4567</div>
+                                    <div class="col-lg-3 col-md-4 label">Contact Number</div>
+                                    <div class="col-lg-9 col-md-8"><?php echo $row["contact_num"] ?></div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Email</div>
-                                    <div class="col-lg-9 col-md-8">supergoku11@example.com</div>
+                                    <div class="col-lg-9 col-md-8"><?php echo $row["email"] ?></div>
                                 </div>
 
                             </div>
@@ -76,31 +78,7 @@
                                         <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input name="fullName" type="text" class="form-control" id="fullName"
-                                                value="">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <textarea name="about" class="form-control" id="about"
-                                                style="height: 100px"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="country" type="text" class="form-control" id="Country"
-                                                value="">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="address" type="text" class="form-control" id="Address"
-                                                value="">
+                                                value="<?php echo $row["name"] ?>">
                                         </div>
                                     </div>
 
@@ -198,7 +176,9 @@
                                 </form><!-- End Change Password Form -->
 
                             </div>
-
+                            <?php 
+                        }}
+                        ?>
                         </div><!-- End Bordered Tabs -->
 
                     </div>

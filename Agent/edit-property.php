@@ -5,17 +5,124 @@ global $con;
 $id = $_GET['id'];
 $sql = "SELECT * FROM seller_property WHERE `seller_property`.`id`= '$id'";
 $result = $con->query($sql);
+
+if(isset($_POST['edit']))
+{
+    $title = $_POST['title'];
+    $typeofProp = $_POST['type'];
+    $price = $_POST['price'];
+    $price = str_replace(",", "", $price);
+    $sqm = $_POST['sqm'];
+    $floorarea = $_POST['floorarea'];
+    $description = $_POST['description'];
+    $Latitude = $_POST['Latitude'];
+    $Longitude = $_POST['Longitude'];
+    $Location = $_POST['Location'];
+    $rooms = $_POST['num-bedrooms'];
+    $garages = $_POST['garages'];
+    $cr = $_POST['comfort-room'];
+    $Location = $_POST['Location'];
+    $current_date = date('Y-m-d');
+
+    // handling the images
+    // `id`, `title`, `more_info`, `price`, `sqm`, `type`, `approved`, `status`, `seller_id`, `latitude`, `longitude`, `location`, `bedroom`, `garages`, `cr`, `image`, `date`, `floor_sqm`
+    if (!empty($_FILES['mainimage']['name'])) {
+        // The variable is not empty, so do something with the file
+        $image = $_FILES['mainimage']['name'];
+        $img_size = $_FILES['mainimage']['size'];
+        $temp_name  =$_FILES['mainimage']['tmp_name'];
+        move_uploaded_file($temp_name,"../uploads/$image");
+        $sql5 = "UPDATE seller_property SET title='$title',more_info='$description',price='$price',sqm='$sqm',type='$typeofProp',latitude='$Latitude',longitude='$Longitude',location='$Location',bedroom='$rooms',garages='$garages',cr='$cr',image='$image',floor_sqm='$floorarea' WHERE id='$id'";
+        $result5 = mysqli_query($con, $sql5);
+    } else {
+        $sql6 = "UPDATE seller_property SET title='$title',more_info='$description',price='$price',sqm='$sqm',type='$typeofProp',latitude='$Latitude',longitude='$Longitude',location='$Location',bedroom='$rooms',garages='$garages',cr='$cr',floor_sqm='$floorarea' WHERE id='$id'";
+        $result6 = mysqli_query($con, $sql6);
+    }
+            
+        // Retrieve existing photos
+        $query1 = "SELECT photos FROM seller_property_photos WHERE property_id='$id'";
+        $result7 = mysqli_query($con, $query1);
+        $existing_photos = array();
+        while ($row2 = mysqli_fetch_assoc($result7)) {
+            $existing_photos[] = $row2['photos'];
+        }
+        if (isset($_FILES['files']) && $_FILES['files']['error'][0] !== 4) {
+        // Loop through new uploaded files
+        foreach($_FILES['files']['tmp_name'] as $key => $tmp_name) {
+            $file_name = $_FILES['files']['name'][$key];
+            $file_path = '../uploads/' . $file_name;
+            
+            // Check if file is already in existing photos
+            if (!in_array($file_name, $existing_photos)) {
+                // Move file to server
+                move_uploaded_file($tmp_name, $file_path);
+                
+                // Insert new photo record into database
+                $query3 = "INSERT INTO seller_property_photos (property_id, photos) VALUES ('$id', '$file_name')";
+                $result9 = mysqli_query($con, $query3);
+            }
+        }
+
+        // Update existing photos in database
+        $query5 = "UPDATE seller_property_photos SET photos = CASE";
+        foreach ($existing_photos as $photo) {
+            $query5 .= " WHEN photos='$photo' THEN '$photo'";
+        }
+        $query5 .= " ELSE photos END WHERE property_id='$id'";
+        $result = mysqli_query($con, $query5);
+    }
+    $inputData = $_POST['amenities'];
+    $ameni = explode(',', $inputData);
+    
+    // Delete all existing rows for the given number
+    $sqlquery2 = "DELETE FROM amenities WHERE property_id = '$id'";
+    $r3 = mysqli_query($con, $sqlquery2);
+    
+    // Insert new rows
+    foreach ($ameni as $row) {
+        $sqlquery3 = "INSERT INTO amenities VALUES ('', '$id', '$row')";
+        $r4 = mysqli_query($con, $sqlquery3);
+    }
+    
+            if($result6 || $result5 || r4 && result9 ){
+                echo "<script>
+                swal({
+                    title: 'Success!',
+                    text: 'Property updated!',
+                    icon: 'success',
+                    button: 'OK',
+                    allowOutsideClick: false,
+                    closeOnEsc: false
+                }).then(function() {
+                    window.location = 'properties.php';
+                });
+            </script>";
+            }
+            else{
+                echo "<script>
+                    swal({
+                        title: 'Error!',
+                        text: 'Something went wrong!',
+                        icon: 'error',
+                        button: 'OK',
+                        allowOutsideClick: false,
+                        closeOnEsc: false
+                    }).then(function() {
+                        window.location = 'posting.php';
+                    });
+                </script>";
+            }
+
+        
+
+}
 ?>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>h5 {
-color: #012970;
-font-weight: 500;
-}
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-#map {
+#locmap {
     margin-top: 20px;
     height: 300px;
     width: 100%;
@@ -115,6 +222,26 @@ select {
 .question-mark-icon:hover::before {
     display: block;
 }
+
+.photo-carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-item {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
 </style>
 
 
@@ -211,7 +338,21 @@ select {
                         <div class="col-lg-12">
                             <label for="description">Amenities: (<em> <i> Amenities can be seperated by commas</i>
                                 </em>)</label>
-                            <textarea class="form-control" name="amenities" id="amenities" rows="3" required></textarea>
+                            <?php
+                                $sql1 = "SELECT * FROM `amenities` WHERE `property_id` = '$id'";
+                                $result1 = $con->query($sql1);
+
+                                // Concatenate the amenities into a single string with commas separating them
+                                $amenities_string = "";
+                                if ($result1->num_rows > 0) {
+                                    while($rows = $result1->fetch_assoc()) {
+                                        $amenities_string .= $rows["amenities"] . ", ";
+                                    }
+                                    $amenities_string = rtrim($amenities_string, ", "); // Remove the trailing comma and space
+                                }                           
+                                ?>
+                            <textarea class="form-control" name="amenities" id="amenities" rows="3"
+                                required><?php echo $amenities_string; ?></textarea>
                         </div>
                         <div class="col-lg-12">
                             <label for="description">Add more Information:</label>
@@ -271,16 +412,37 @@ select {
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Main photo:</label>
+                                <br>
+                                <br>
                                 <a href="../uploads/<?= $row["image"] ?>" target="_blank">
                                     <img src="../uploads/<?= $row["image"] ?>" class="img-fluid"
                                         style="width: 300px; height: 300px; object-fit: cover;">
                                 </a>
-                                <input class="form-control" name="mainimage" type="file" required>
+                                <br>
+                                <br>
+                                <input class="form-control" name="mainimage" type="file">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Other photos:</label>
+                                <br>
+                                <br>
+                                <div class="swiper-container photo-carousel" style="overflow: hidden; ">
+                                    <div class="swiper-wrapper">
+                                        <?php
+                                        $query = "SELECT photos FROM `seller_property_photos` WHERE property_id = '$id'";
+                                        $result2 = mysqli_query($con, $query);
+                                        $photos = mysqli_fetch_all($result2, MYSQLI_ASSOC);
+
+                                        // Display the photos as <img> tags inside a carousel item
+                                        foreach ($photos as $photo) {
+                                            echo '<div class="swiper-slide"><img src="../uploads/' . $photo['photos'] . '" style="width: 300px; height: 300px;"></div>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                <br>
                                 <input class="form-control" name="files[]" type="file" multiple>
                             </div>
                         </div>
@@ -291,7 +453,7 @@ select {
                     <hr>
                     <div class="row">
                         <div class="col-md-7">
-                            <div class="map" id="map"></div>
+                            <div class="locmap" id="locmap"></div>
                         </div>
                         <!-- The question mark icon -->
                         <div title="Need Help?" class="question-mark-icon" onclick="openModal()"></div>
@@ -337,7 +499,7 @@ select {
                         </div>
                     </div>
                 </div>
-                <input type="submit" value="Submit" class="btn btn-primary m-2" name="add"
+                <input type="submit" value="Submit" class="btn btn-primary m-2" name="edit"
                     style="float:right; width:100px">
             </form>
             <?php
@@ -350,11 +512,115 @@ include 'footer.php'; ?>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="js/map.js"></script>
+    <!-- <script src="js/map.js"></script> -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
         integrity="sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Include Swiper library -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
     <script>
+    var mySwiper = new Swiper('.swiper-container', {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        loop: true,
+        autoplay: {
+            delay: 5000,
+        },
+        // pagination: {
+        //     el: '.swiper-pagination',
+        //     clickable: true,
+        // },
+    });
+
+    $(document).ready(function() {
+        // Get the values of lat and lng from the text box
+        var lat = $('#Latitude').val();
+        var lng = $('#Longitude').val();
+
+
+        // Convert the string values to numbers
+        lat = parseFloat(lat);
+        lng = parseFloat(lng);
+
+
+        const maps = L.map('locmap').setView([lat, lng], 15);
+
+        // Google Streets Layer
+        const googleStreets = L.tileLayer(
+            'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+            }).addTo(maps);
+
+        // Satellite Layer
+        googleSat = L.tileLayer(
+            'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+            });
+        googleSat.addTo(maps);
+
+        // Control what layers to see in the map
+        var baseLayers = {
+            "Google Map": googleStreets,
+            "Satellite": googleSat,
+        };
+        L.control.layers(baseLayers).addTo(maps);
+
+        // Add a marker to the map
+        var marker = L.marker([lat, lng]).addTo(maps);
+        // Trigger a resize event to make sure the map is properly displayed
+        setTimeout(function() {
+            window.dispatchEvent(new Event("resize"));
+        }, 500);
+
+
+        var geocoderNominatim = new L.Control.Geocoder.Nominatim();
+        var geocoder = L.Control.geocoder({
+                defaultMarkGeocode: false,
+                draggable: true,
+                geocoder: geocoderNominatim
+            })
+            .on('markgeocode', function(e) {
+                var box = e.geocode.center;
+                var name = e.geocode.name;
+                document.getElementById("Latitude").value = box.lat;
+                document.getElementById("Longitude").value = box.lng;
+                document.getElementById("Location").value = e.geocode.name;
+                MarkLayer = L.marker([box.lat, box.lng], {
+                    draggable: true
+                }).addTo(maps).
+                on('dragend', onDragEnd).
+                bindPopup(e.geocode.name).
+                openPopup();
+                displayLatLng(box);
+
+                group = new L.featureGroup([MarkLayer]);
+
+                maps.fitBounds(group.getBounds());
+
+            }).addTo(maps);
+
+        function onDragEnd(event) {
+            var latlng = event.target.getLatLng();
+            geocoderNominatim.reverse(latlng, maps.options.crs.scale(maps.getZoom()),
+                function(reverseGeocoded) {
+                    event.target.setPopupContent(reverseGeocoded[0].name).openPopup();
+                    document.getElementById("Location").value = reverseGeocoded[0].name;
+                }, this)
+            displayLatLng(latlng);
+
+        }
+
+        function displayLatLng(latlng) {
+            document.getElementById("Latitude").value = latlng.lat;
+            document.getElementById("Longitude").value = latlng.lng;
+
+        }
+    });
+
     function showOptions() {
         var propertyType = document.getElementById("property-type").value;
         var rooms = document.getElementById("num-bedrooms");
