@@ -104,7 +104,7 @@ require_once 'php/dashi.php';
                             <div id="columnChart"></div>
 
                             <?php 
-    $sql = "SELECT seller_id, SUM(price) AS price
+    $sql = "SELECT seller_id, MAX(price) AS price
             FROM seller_property
             WHERE status = 'Sold'
             GROUP BY seller_id
@@ -186,6 +186,19 @@ require_once 'php/dashi.php';
                     </div>
                 </div>
 
+<?php 
+    $sql = "SELECT seller_id, SUM(price) AS price
+            FROM seller_property
+            WHERE status = 'Sold'
+            GROUP BY seller_id
+            LIMIT 5;";
+    $result = mysqli_query($con, $sql);
+    $data = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = $row['price'];
+    }
+?>
+
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
@@ -197,9 +210,8 @@ require_once 'php/dashi.php';
                             document.addEventListener("DOMContentLoaded", () => {
                                 new ApexCharts(document.querySelector("#barChart"), {
                                     series: [{
-                                        data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200,
-                                            1380
-                                        ]
+                                        data: <?php echo json_encode($data); ?>
+                                        
                                     }],
                                     chart: {
                                         type: 'bar',
@@ -215,9 +227,20 @@ require_once 'php/dashi.php';
                                         enabled: false
                                     },
                                     xaxis: {
-                                        categories: ['South Korea', 'Canada', 'United Kingdom',
-                                            'Netherlands', 'Italy', 'France', 'Japan',
-                                            'United States', 'China', 'Germany'
+                                        categories: [<?php
+                        $quer = "SELECT name FROM seller_login WHERE id IN (
+                                    SELECT seller_id FROM seller_property
+                                    WHERE status = 'Sold'
+                                    GROUP BY seller_id
+                                    )";
+                        $result = mysqli_query($con, $quer);
+                        $names = array();
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $names[] = $row['name'];
+                            // echo json_encode($names);
+                        }
+                        echo "'" . implode("', '", $names) . "'";
+                    ?>
                                         ],
                                     }
                                 }).render();

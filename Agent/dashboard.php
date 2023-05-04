@@ -1,6 +1,11 @@
 <?php include 'header.php'; 
 require_once 'php/connection.php';
 require_once 'php/dashi.php';
+
+global $con;
+$user = $_SESSION['ID'];
+$userID = implode($user);
+
 ?>
 
 <body>
@@ -38,11 +43,23 @@ require_once 'php/dashi.php';
                     </div>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Sales</h5>
-                            <h2><?php ?></h2>
+                            <h5 class="card-title">Total Sales</h5>
+                            <h2><?php
+                            $sql = "SELECT SUM(price) AS price
+                                    FROM seller_property
+                                    WHERE status = 'Sold' AND seller_id = '$userID'";
+                            $result = mysqli_query($con, $sql);
+                            $rows=mysqli_fetch_assoc($result);
+
+                            $total = $rows['price'];
+
+                            $format_total = number_format($total, 2, '.', ',');
+                            echo 'Php ' . $format_total;
+
+                        ?></h2>
                         </div>
                     </div>
                 </div>
