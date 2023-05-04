@@ -1,11 +1,6 @@
 <?php include 'header.php'; 
 require_once 'php/connection.php';
 require_once 'php/dashi.php';
-
-global $con;
-$user = $_SESSION['ID'];
-$userID = implode($user);
-
 ?>
 
 <body>
